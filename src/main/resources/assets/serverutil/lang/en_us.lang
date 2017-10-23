@@ -1,0 +1,2 @@
+serverutil.commands.tpx.usage=/tpx [target player] <destination player> OR /tpx [target player] [dimensionId] <x> <y> <z>
+serverutil.commands.tpx.sameDimension=Entity is already in specified dimension!

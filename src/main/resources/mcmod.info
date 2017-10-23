@@ -1,0 +1,16 @@
+[
+{
+  "modid": "serverutil",
+  "name": "ServerUtil",
+  "description": "",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Unixkitty"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

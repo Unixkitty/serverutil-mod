@@ -18,6 +18,8 @@ import java.util.List;
 
 public class DimensionTeleportCommand extends CommandBase
 {
+    final String stringUsage = ServerUtilMod.MODID + ".commands.tpx.usage";
+
     private final List<String> aliases;
 
     public DimensionTeleportCommand()
@@ -32,11 +34,18 @@ public class DimensionTeleportCommand extends CommandBase
         return "tpx";
     }
 
+    @Nonnull
+    @Override
+    public List<String> getAliases()
+    {
+        return aliases;
+    }
+
     @Override
     @Nonnull
     public String getUsage(@Nonnull ICommandSender sender)
     {
-        return ServerUtilMod.MODID + ".commands.tpx.usage";
+        return ServerUtilMod.proxy.translateString(stringUsage);
     }
 
     @Override
@@ -106,7 +115,7 @@ public class DimensionTeleportCommand extends CommandBase
                     }
                     else
                     {
-                        throw new CommandException(ServerUtilMod.MODID + ".commands.tpx.sameDimension", new Object[0]);
+                        throw new CommandException(ServerUtilMod.proxy.translateString(ServerUtilMod.MODID + ".commands.tpx.sameDimension"), new Object[0]);
                     }
                 }
             }

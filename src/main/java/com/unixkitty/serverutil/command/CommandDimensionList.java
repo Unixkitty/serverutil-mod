@@ -9,7 +9,7 @@ import net.minecraft.world.WorldServer;
 
 import javax.annotation.Nonnull;
 
-public class DimensionListCommand extends CommandBase
+public class CommandDimensionList extends CommandBase
 {
     @Nonnull
     @Override

@@ -2,6 +2,7 @@ package com.unixkitty.serverutil.command;
 
 import com.google.common.collect.Lists;
 import com.unixkitty.serverutil.ServerUtilMod;
+import com.unixkitty.serverutil.command.util.CustomDimensionTeleporter;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -16,13 +17,13 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class DimensionTeleportCommand extends CommandBase
+public class CommandDimensionTeleport extends CommandBase
 {
     final String stringUsage = ServerUtilMod.MODID + ".commands.tpx.usage";
 
     private final List<String> aliases;
 
-    public DimensionTeleportCommand()
+    public CommandDimensionTeleport()
     {
         aliases = Lists.newArrayList(ServerUtilMod.MODID, "TPX", "tpx");
     }

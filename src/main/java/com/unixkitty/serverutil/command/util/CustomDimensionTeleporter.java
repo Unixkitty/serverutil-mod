@@ -1,4 +1,4 @@
-package com.unixkitty.serverutil.command;
+package com.unixkitty.serverutil.command.util;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;

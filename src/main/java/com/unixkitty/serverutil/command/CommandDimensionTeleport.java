@@ -54,7 +54,7 @@ public class CommandDimensionTeleport extends CommandBase
     {
         if (args.length < 2 || args.length > 5)
         {
-            throw new WrongUsageException(getUsage(sender), new Object[0]);
+            throw new WrongUsageException(getUsage(sender));
         }
         else
         {
@@ -116,7 +116,7 @@ public class CommandDimensionTeleport extends CommandBase
                     }
                     else
                     {
-                        throw new CommandException(ServerUtilMod.proxy.translateString(ServerUtilMod.MODID + ".commands.tpx.sameDimension"), new Object[0]);
+                        throw new CommandException(ServerUtilMod.proxy.translateString(ServerUtilMod.MODID + ".commands.tpx.sameDimension"));
                     }
                 }
             }
@@ -149,7 +149,7 @@ public class CommandDimensionTeleport extends CommandBase
             }
             else
             {
-                throw new WrongUsageException(getUsage(sender), new Object[0]);
+                throw new WrongUsageException(getUsage(sender));
             }
 
         }

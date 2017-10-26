@@ -1,6 +1,8 @@
 serverutil.commands.tpx.usage=/tpx (target entity) (destination entity) OR /tpx (target entity) (dimensionId) [ <x> <y> <z> ]
 serverutil.commands.tpx.sameDimension=Entity is already in specified dimension!
-serverutil.commands.mod_bugs.usage=/mod_bugs add (name) [description] OR /mod_bugs update <name> <description> OR /mod_bugs reload
+serverutil.commands.mod_bugs.usage=/mod_bugs add (name) (person) [description] OR /mod_bugs update <name> <description> OR /mod_bugs reload
 serverutil.commands.mod_bugs.exists=Entry with name %s already exists!
 serverutil.commands.mod_bugs.notexists=Entry not found
+serverutil.commands.nosuchplayer=Player with username %s not found!
 serverutil.commands.mod_bugs.print_bugs=%s, added by %s: %s
+serverutil.commands.playerid.usage=/playerid name [uuid] OR /playerid id [username]

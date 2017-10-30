@@ -22,43 +22,34 @@ public class PlayerUUIDTool
 
     public static UUID getID(String username) throws IOException
     {
-        try
+        if (result != null && result.name.equals(username))
         {
-            if (result != null && result.username.equals(username))
+            ServerUtilMod.log.debug("Got uuid from last result in memory.");
+            return UUIDTypeAdapter.fromString(result.id);
+        }
+        else
+        {
+            Map<UUID, String> cache = UsernameCache.getMap();
+
+            if (cache.containsValue(username))
             {
-                ServerUtilMod.log.info("Got uuid from last result in memory.");
-                return UUIDTypeAdapter.fromString(result.id);
+                for (Map.Entry entry : cache.entrySet())
+                {
+                    if (entry.getValue().equals(username))
+                    {
+                        ServerUtilMod.log.debug("Got uuid from username cache on disk.");
+                        return UUIDTypeAdapter.fromString(entry.getKey().toString());
+                    }
+                }
             }
             else
             {
-                Map<UUID, String> cache = UsernameCache.getMap();
+                //Online fetch
+                result = new Gson().fromJson(readUrl(URL_RETURNS_UUID + "/" + username), PlayerID.class);
 
-                if (cache.containsValue(username))
-                {
-                    for (Map.Entry entry : cache.entrySet())
-                    {
-                        if (entry.getValue().equals(username))
-                        {
-                            ServerUtilMod.log.info("Got uuid from username cache on disk.");
-                            return UUIDTypeAdapter.fromString(entry.getKey().toString());
-                        }
-                    }
-                }
-                else
-                {
-                    //Online fetch
-                    result = new Gson().fromJson(readUrl(URL_RETURNS_UUID + "/" + username), PlayerID.class);
-
-                    ServerUtilMod.log.info("Got uuid from mojang api online.");
-                    return UUIDTypeAdapter.fromString(result.id);
-                }
+                ServerUtilMod.log.debug("Got uuid from mojang api online.");
+                return UUIDTypeAdapter.fromString(result.id);
             }
-        }
-        catch (NullPointerException e)
-        {
-            //TODO redo url reading
-            ServerUtilMod.log.info("Null: " + result);
-            ServerUtilMod.log.info(result.id + ":" + result.username);
         }
         return null;
     }
@@ -67,8 +58,8 @@ public class PlayerUUIDTool
     {
         if (result != null && result.id.equals(playerUUID))
         {
-            ServerUtilMod.log.info("Got username from last result in memory.");
-            return result.username;
+            ServerUtilMod.log.debug("Got username from last result in memory.");
+            return result.name;
         }
         else
         {
@@ -80,12 +71,12 @@ public class PlayerUUIDTool
             {
                 result = new Gson().fromJson(readUrl(URL_RETURNS_NAME + "/" + playerUUID), PlayerID.class);
 
-                ServerUtilMod.log.info("Got username from mojang api online.");
-                return result.username;
+                ServerUtilMod.log.debug("Got username from mojang api online.");
+                return result.name;
             }
             else
             {
-                ServerUtilMod.log.info("Got username from cache on disk.");
+                ServerUtilMod.log.debug("Got username from cache on disk.");
                 return resultUsername;
             }
         }
@@ -119,6 +110,6 @@ public class PlayerUUIDTool
     class PlayerID
     {
         String id;
-        String username;
+        String name;
     }
 }

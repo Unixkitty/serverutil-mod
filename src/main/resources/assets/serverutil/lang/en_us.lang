@@ -5,4 +5,4 @@ serverutil.commands.mod_bugs.exists=Entry with name %s already exists!
 serverutil.commands.mod_bugs.notexists=Entry not found
 serverutil.commands.nosuchplayer=Player with username %s not found!
 serverutil.commands.mod_bugs.print_bugs=%s, added by %s: %s
-serverutil.commands.playerid.usage=/playerid name [uuid] OR /playerid id [username]
+serverutil.commands.playerid.usage=/playerid ( username | uuid )

@@ -1,16 +1,30 @@
 package com.unixkitty.serverutil.command.util;
 
+import com.google.common.collect.Maps;
+import com.google.common.io.Files;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.unixkitty.serverutil.ServerUtilMod;
 import net.minecraft.command.CommandException;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class ModBugStore
 {
-    private static LinkedHashMap<String, Bug> bugs = new LinkedHashMap<>();
-    private static String errorNotExists = ServerUtilMod.MODID + ".commands.mod_bugs.notexists";
+    private static LinkedHashMap<String, Bug> bugs = null;
+    private static final Charset charset = StandardCharsets.UTF_8;
+    private static final File storageFile = new File(ServerUtilMod.instance.getConfigFolder(), "mod_bugs.json");
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static String nosuchbug = ServerUtilMod.MODID + ".commands.mod_bugs.notexists";
 
     private ModBugStore(){}
 
@@ -19,19 +33,27 @@ public class ModBugStore
         return bugs.get(name);
     }
 
-    public static List<TextComponentTranslation> getBugList()
+    public static List<TextComponentString> getBugList()
     {
-        List<TextComponentTranslation> list = new ArrayList<>();
+        List<TextComponentString> list;
 
-        for (Bug bug : bugs.values())
+        if (bugs == null)
         {
-            list.add(new TextComponentTranslation(ServerUtilMod.MODID + ".commands.mod_bugs.print_bugs", bug.name, bug.person, bug.description));
+            list = Collections.emptyList();
+        }
+        else
+        {
+            list = new ArrayList<>();
+            for (Bug bug : bugs.values())
+            {
+                list.add(new TextComponentString(bug.name + " (" + TextFormatting.AQUA + bug.player + TextFormatting.RESET + ")" + " [" + bug.status + "]: " + bug.description));
+            }
         }
 
         return list;
     }
 
-    public static void addBug(String name, String personUUID, String description) throws CommandException
+    public static void addBug(String name, UUID player, String description) throws CommandException
     {
         if (bugs.containsKey(name))
         {
@@ -39,7 +61,7 @@ public class ModBugStore
         }
         else
         {
-            bugs.put(name, new Bug(name, personUUID, description));
+            bugs.put(name, new Bug(name, player, description));
         }
     }
 
@@ -51,7 +73,7 @@ public class ModBugStore
         }
         else
         {
-            throw new CommandException(errorNotExists);
+            throw new CommandException(nosuchbug);
         }
     }
 
@@ -63,7 +85,7 @@ public class ModBugStore
         }
         else
         {
-            throw new CommandException(errorNotExists);
+            throw new CommandException(nosuchbug);
         }
     }
 
@@ -75,21 +97,93 @@ public class ModBugStore
         }
         else
         {
-            throw new CommandException(errorNotExists);
+            throw new CommandException(nosuchbug);
         }
     }
 
-    private static class Bug
+    private static void save()
+    {
+        new SaveThread(gson.toJson(bugs)).start();
+    }
+
+    public static void load()
+    {
+        if (bugs == null)
+        {
+            bugs = Maps.newLinkedHashMap();
+        }
+
+        if (!storageFile.exists()) return;
+
+        try
+        {
+            String json = Files.toString(storageFile, charset);
+            Type type = new TypeToken<Map<String, Bug>>() { private static final long serialVersionUID = 1L; }.getType();
+
+            bugs = gson.fromJson(json, type);
+        }
+        catch (JsonSyntaxException e)
+        {
+            ServerUtilMod.log.error("Could not parse mod_bugs.json as valid json", e);
+        }
+        catch (IOException e)
+        {
+            ServerUtilMod.log.error("Failed to read mod_bugs.json from disk", e);
+        }
+        finally
+        {
+            if (bugs == null)
+            {
+                bugs = Maps.newLinkedHashMap();
+            }
+        }
+    }
+
+    /**
+     * Used for saving the {@link com.google.gson.Gson#toJson(Object) Gson}
+     * representation of the cache to disk
+     *
+     * copy from {@link net.minecraftforge.common.UsernameCache}
+     */
+    private static class SaveThread extends Thread {
+
+        /** The data that will be saved to disk */
+        private final String data;
+
+        public SaveThread(String data)
+        {
+            this.data = data;
+        }
+
+        @Override
+        public void run()
+        {
+            try
+            {
+                // Make sure we don't save when another thread is still saving
+                synchronized (storageFile)
+                {
+                    Files.write(data, storageFile, charset);
+                }
+            }
+            catch (IOException e)
+            {
+                ServerUtilMod.log.error("Failed to save username cache to file!", e);
+            }
+        }
+    }
+
+    public static class Bug
     {
         private final String name;
-        private final String person;
+        private final UUID player;
         private String description;
         private BUG_STATUS status;
 
-        private Bug(String name, String personUUID, String description)
+        Bug(String name, UUID personUUID, String description)
         {
             this.name = name;
-            this.person = personUUID;
+            this.player = personUUID;
             this.description = description;
 
             this.status = BUG_STATUS.RELEVANT;
@@ -108,21 +202,24 @@ public class ModBugStore
         }
     }
 
-    private enum BUG_STATUS
+    public enum BUG_STATUS
     {
-        RELEVANT(TextFormatting.RED),
-        FIXED(TextFormatting.GREEN);
+        RELEVANT("relevant", TextFormatting.RED),
+        FIXED("fixed", TextFormatting.GREEN);
 
-        private TextFormatting formatting;
+        TextFormatting formatting;
+        String name;
 
-        BUG_STATUS(TextFormatting formatting)
+        BUG_STATUS(String name, TextFormatting formatting)
         {
+            this.name = name;
             this.formatting = formatting;
         }
 
-        public TextFormatting color()
+        @Override
+        public String toString()
         {
-            return formatting;
+            return this.formatting + this.name + TextFormatting.RESET;
         }
     }
 }

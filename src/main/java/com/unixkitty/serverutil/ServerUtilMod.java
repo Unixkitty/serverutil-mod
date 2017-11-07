@@ -25,10 +25,7 @@ public class ServerUtilMod
 
     public static Logger log = LogManager.getLogger(NAME);
 
-    private File config;
-
-    private final CommandMOTD motdHandler = new CommandMOTD();
-    private final CommandModBugs commandModBugs = new CommandModBugs();
+    private File configFolder;
 
     @Mod.Instance(MODID)
     public static ServerUtilMod instance;
@@ -36,7 +33,7 @@ public class ServerUtilMod
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        config = event.getSuggestedConfigurationFile();
+        configFolder = new File(event.getModConfigurationDirectory(), ServerUtilMod.MODID);
         ModConfig.load();
     }
 
@@ -45,25 +42,28 @@ public class ServerUtilMod
     {
         if (ModConfig.showMOTD())
         {
-            MinecraftForge.EVENT_BUS.register(motdHandler);
+            MinecraftForge.EVENT_BUS.register(CommandMOTD.instance);
         }
     }
 
     @Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent event)
     {
-        event.registerServerCommand(new CommandDimensionTeleport());
+        if (ModConfig.registerTeleportCommand())
+        {
+            event.registerServerCommand(new CommandDimensionTeleport());
+        }
         event.registerServerCommand(new CommandDimensionList());
-        event.registerServerCommand(motdHandler);
-        event.registerServerCommand(commandModBugs);
+        event.registerServerCommand(CommandMOTD.instance);
+        event.registerServerCommand(CommandModBugs.instance);
         event.registerServerCommand(new CommandPlayerID());
     }
 
     @SidedProxy(serverSide = "com.unixkitty.serverutil.proxy.CommonProxy", clientSide = "com.unixkitty.serverutil.proxy.ClientProxy")
     public static CommonProxy proxy;
 
-    public File getConfig()
+    public File getConfigFolder()
     {
-        return config;
+        return configFolder;
     }
 }

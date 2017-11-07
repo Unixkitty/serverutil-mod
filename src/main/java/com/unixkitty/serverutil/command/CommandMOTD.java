@@ -12,6 +12,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.relauncher.FMLInjectionData;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -24,9 +25,11 @@ public class CommandMOTD extends CommandBase implements IInformationSender
     private List<String> MOTD;
     private final PropertyManagerCustom propertyManager;
 
-    public CommandMOTD()
+    public static final CommandMOTD instance = new CommandMOTD();
+
+    private CommandMOTD()
     {
-        this.propertyManager = new PropertyManagerCustom(new File(ServerUtilMod.MODID + "-" + "motd" + ".properties"), ServerUtilMod.NAME + " motd");
+        this.propertyManager = new PropertyManagerCustom(new File((File) FMLInjectionData.data()[6], ServerUtilMod.MODID + "-" + "motd" + ".properties"), ServerUtilMod.NAME + " motd");
         this.MOTD = this.buildMessage();
     }
 

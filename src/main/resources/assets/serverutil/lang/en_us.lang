@@ -1,8 +1,18 @@
-serverutil.commands.tpx.usage=/tpx (target entity) (destination entity) OR /tpx (target entity) (dimensionId) [ <x> <y> <z> ]
+#PARSE_ESCAPES
+serverutil.commands.tpx.usage=/tpx (target entity) (destination entity) \n\
+OR /tpx (target entity) (dimensionId) [ <x> <y> <z> ]
 serverutil.commands.tpx.sameDimension=Entity is already in specified dimension!
-serverutil.commands.mod_bugs.usage=/mod_bugs add (name) (person) [description] OR /mod_bugs update <name> <description> OR /mod_bugs reload
+
+serverutil.commands.mod_bugs.usage=/mod_bugs add (name) (person) [description] \n\
+OR /mod_bugs reload \n\
+OR /mod_bugs remove <name> \n\
+OR /mod_bugs update <name> < description | status > \n\
+    status can be one of: "relevant", "fixed"
 serverutil.commands.mod_bugs.exists=Entry with name %s already exists!
 serverutil.commands.mod_bugs.notexists=Entry not found
+serverutil.commands.mod_bugs.changesuccess=Successfully updated bug with name %s
+serverutil.commands.mod_bugs.bugremoved=Bug %s removed
+serverutil.commands.mod_bugs.listempty=The bug list is currently empty
+
 serverutil.commands.nosuchplayer=Player with username %s not found!
-serverutil.commands.mod_bugs.print_bugs=%s, added by %s: %s
 serverutil.commands.playerid.usage=/playerid ( username | uuid )

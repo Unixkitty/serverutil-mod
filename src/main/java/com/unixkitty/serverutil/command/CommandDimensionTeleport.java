@@ -3,6 +3,7 @@ package com.unixkitty.serverutil.command;
 import com.google.common.collect.Lists;
 import com.unixkitty.serverutil.ServerUtilMod;
 import com.unixkitty.serverutil.command.util.CustomDimensionTeleporter;
+import com.unixkitty.serverutil.util.CoordinateSet;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -122,14 +123,11 @@ public class CommandDimensionTeleport extends CommandBase
             }
             else if (args.length == 5)
             {
-                int i = 4096;
-                CommandBase.CoordinateArg parsedX = parseCoordinate(teleportingEntity.posX, args[2], true);
-                CommandBase.CoordinateArg parsedY = parseCoordinate(teleportingEntity.posY, args[3], -i, i, false);
-                CommandBase.CoordinateArg parsedZ = parseCoordinate(teleportingEntity.posZ, args[4], true);
+                CoordinateSet coords = CoordinateSet.parseCoordinates(teleportingEntity.posX, teleportingEntity.posY, teleportingEntity.chunkCoordZ, args[2], args[3], args[4]);
 
-                targetX = parsedX.getResult();
-                targetY = parsedY.getResult();
-                targetZ = parsedZ.getResult();
+                targetX = coords.getX();
+                targetY = coords.getY();
+                targetZ = coords.getZ();
 
                 if (teleportingEntity.dimension != targetDimension)
                 {

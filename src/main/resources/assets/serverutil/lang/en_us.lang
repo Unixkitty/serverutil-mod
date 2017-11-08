@@ -1,4 +1,7 @@
 #PARSE_ESCAPES
+serverutil.commands.regioncoord.usage=/regioncoord <x> <z>
+serverutil.commands.regioncoord.message=Region file name: %s, chunk coord: %s, %s
+
 serverutil.commands.dimensionlist.message=%s, id: %s
 
 serverutil.commands.tpx.usage=/tpx (target entity) (destination entity) \n\

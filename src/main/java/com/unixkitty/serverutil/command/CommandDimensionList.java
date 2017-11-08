@@ -1,10 +1,12 @@
 package com.unixkitty.serverutil.command;
 
+import com.unixkitty.serverutil.ServerUtilMod;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.WorldServer;
 
 import javax.annotation.Nonnull;
@@ -32,19 +34,7 @@ public class CommandDimensionList extends CommandBase
         {
             if (world != null)
             {
-                String worldName;
-                int dimensionId = world.provider.getDimension();
-                switch (dimensionId)
-                {
-                    case 0: worldName = "Overworld";
-                    break;
-                    case 1: worldName = "The Nether";
-                    break;
-                    case -1: worldName = "The End";
-                    break;
-                    default: worldName = world.provider.getSaveFolder();
-                }
-                sender.sendMessage(new TextComponentString("\"" + worldName + "\", " + "id: " + dimensionId));
+                sender.sendMessage(new TextComponentTranslation(ServerUtilMod.MODID + ".commands.dimensionlist.message", world.provider.getDimensionType().getName(), world.provider.getDimension()));
             }
         }
     }

@@ -1,4 +1,6 @@
 #PARSE_ESCAPES
+serverutil.commands.dimensionlist.message=%s, id: %s
+
 serverutil.commands.tpx.usage=/tpx (target entity) (destination entity) \n\
 OR /tpx (target entity) (dimensionId) [ <x> <y> <z> ]
 serverutil.commands.tpx.sameDimension=Entity is already in specified dimension!

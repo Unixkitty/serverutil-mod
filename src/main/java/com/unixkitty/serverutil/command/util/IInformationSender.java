@@ -1,14 +1,15 @@
 package com.unixkitty.serverutil.command.util;
 
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 
 import java.util.List;
 
 public interface IInformationSender
 {
-    List buildMessage();
+    List buildMessage() throws CommandException;
 
-    default void reloadProperties()
+    default void reloadProperties() throws CommandException
     {
         this.buildMessage();
     }

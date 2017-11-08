@@ -6,18 +6,15 @@ import com.unixkitty.serverutil.ServerUtilMod;
 import com.unixkitty.serverutil.command.util.IInformationSender;
 import com.unixkitty.serverutil.command.util.ModBugStore;
 import com.unixkitty.serverutil.util.PlayerIDTool;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
+import net.minecraft.command.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,7 +31,14 @@ public class CommandModBugs extends CommandBase implements IInformationSender
 
         ModBugStore.load();
 
-        this.buildMessage();
+        try
+        {
+            reloadProperties();
+        }
+        catch (CommandException e)
+        {
+            this.bugListMessage = Collections.emptyList();
+        }
     }
 
     @Nonnull
@@ -65,10 +69,24 @@ public class CommandModBugs extends CommandBase implements IInformationSender
     }
 
     @Override
-    public List<TextComponentString> buildMessage()
+    public List<TextComponentString> buildMessage() throws CommandException
     {
-        this.bugListMessage = ModBugStore.getBugList();
+        try
+        {
+            this.bugListMessage = ModBugStore.getBugList();
+        }
+        catch (IOException e)
+        {
+            throw new CommandException(e.getMessage());
+        }
         return this.bugListMessage;
+    }
+
+    @Override
+    public void reloadProperties() throws CommandException
+    {
+        ModBugStore.load();
+        buildMessage();
     }
 
     @Override
@@ -92,7 +110,6 @@ public class CommandModBugs extends CommandBase implements IInformationSender
     {
         if (args.length == 0)
         {
-            //TODO
             sendMessage(sender);
         }
         else
@@ -103,7 +120,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
                     if (sender.canUseCommand(4, getName()))
                     {
                         sender.sendMessage(new TextComponentString("Reloading mod_bugs file."));
-                        ModBugStore.load();
+                        reloadProperties();
                     }
                     else
                     {
@@ -115,7 +132,8 @@ public class CommandModBugs extends CommandBase implements IInformationSender
                     {
                         if (args.length >= 3)
                         {
-                            ModBugStore.addBug(args[1], UUIDTypeAdapter.fromString(PlayerIDTool.getIDFromCommand(server, sender, args[2]).id()), args[3]);
+                            ModBugStore.addBug(args[1], UUIDTypeAdapter.fromString(PlayerIDTool.getIDFromCommand(server, sender, args[2]).id()), joinDescription(args, 3));
+                            buildMessage();
                             messageSuccess(sender, args[1]);
                         }
                         else
@@ -139,6 +157,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
                                 status = ModBugStore.BUG_STATUS.valueOf(args[2].toUpperCase());
 
                                 ModBugStore.updateBug(args[1], status);
+                                buildMessage();
                                 messageSuccess(sender, args[1]);
                             }
                             catch (IllegalArgumentException e)
@@ -148,7 +167,8 @@ public class CommandModBugs extends CommandBase implements IInformationSender
 
                             if (status == null)
                             {
-                                ModBugStore.updateBug(args[1], args[2]);
+                                ModBugStore.updateBug(args[1], joinDescription(args, 2));
+                                buildMessage();
                                 messageSuccess(sender, args[1]);
                             }
                         }
@@ -168,6 +188,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
                         if (args.length >= 2)
                         {
                             ModBugStore.removeBug(args[1]);
+                            buildMessage();
                             sender.sendMessage(new TextComponentTranslation(ServerUtilMod.MODID + ".commands.mod_bugs.bugremoved", args[1]));
                         }
                         else
@@ -194,6 +215,25 @@ public class CommandModBugs extends CommandBase implements IInformationSender
     private void nope() throws CommandException
     {
         throw new CommandException("commands.generic.permission");
+    }
+
+    private String joinDescription(@Nonnull String[] args, int beginFrom)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < args.length; i++)
+        {
+            if (i >= beginFrom)
+            {
+                sb.append(args[i]);
+                if (i + 1 != args.length)
+                {
+                    sb.append(" ");
+                }
+            }
+        }
+
+        return sb.toString();
     }
 
     @Nonnull

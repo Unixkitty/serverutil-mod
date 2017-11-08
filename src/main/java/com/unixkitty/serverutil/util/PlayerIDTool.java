@@ -162,8 +162,7 @@ public class PlayerIDTool
             ServerUtilMod.log.error("Error: could not save cache to disk, unable to access method \"" + methodName + "\".");
         }
 
-        resultCache = playerID;
-        return resultCache;
+        return resultCache = playerID;
     }
 
     private static String readUrl(String url) throws IOException

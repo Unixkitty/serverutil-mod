@@ -1,13 +1,15 @@
 package com.unixkitty.serverutil.command.util;
 
-import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.internal.LinkedTreeMap;
 import com.unixkitty.serverutil.ServerUtilMod;
+import com.unixkitty.serverutil.util.PlayerIDTool;
 import net.minecraft.command.CommandException;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
@@ -20,7 +22,7 @@ import java.util.*;
 
 public class ModBugStore
 {
-    private static LinkedHashMap<String, Bug> bugs = null;
+    private static LinkedTreeMap<String, Bug> bugs = null;
     private static final Charset charset = StandardCharsets.UTF_8;
     private static final File storageFile = new File(ServerUtilMod.instance.getConfigFolder(), "mod_bugs.json");
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -33,7 +35,7 @@ public class ModBugStore
         return bugs.get(name);
     }
 
-    public static List<TextComponentString> getBugList()
+    public static List<TextComponentString> getBugList() throws IOException, PlayerNotFoundException
     {
         List<TextComponentString> list;
 
@@ -44,9 +46,10 @@ public class ModBugStore
         else
         {
             list = new ArrayList<>();
+            int i = 0;
             for (Bug bug : bugs.values())
             {
-                list.add(new TextComponentString(bug.name + " (" + TextFormatting.AQUA + bug.player + TextFormatting.RESET + ")" + " [" + bug.status + "]: " + bug.description));
+                list.add(new TextComponentString(++i + ". " + bug.name + " (" + TextFormatting.AQUA + PlayerIDTool.getID(bug.player.toString()).name() + TextFormatting.RESET + ")" + " [" + bug.status + "]: " + bug.description));
             }
         }
 
@@ -62,6 +65,7 @@ public class ModBugStore
         else
         {
             bugs.put(name, new Bug(name, player, description));
+            save();
         }
     }
 
@@ -70,6 +74,7 @@ public class ModBugStore
         if (bugs.containsKey(name))
         {
             bugs.put(name, getBug(name).updateDescription(description));
+            save();
         }
         else
         {
@@ -82,6 +87,7 @@ public class ModBugStore
         if (bugs.containsKey(name))
         {
             bugs.put(name, getBug(name).updateStatus(status));
+            save();
         }
         else
         {
@@ -91,9 +97,9 @@ public class ModBugStore
 
     public static void removeBug(String name) throws CommandException
     {
-        if (bugs.containsKey(name))
+        if (bugs.remove(name) != null)
         {
-            bugs.remove(name);
+            save();
         }
         else
         {
@@ -110,7 +116,7 @@ public class ModBugStore
     {
         if (bugs == null)
         {
-            bugs = Maps.newLinkedHashMap();
+            bugs = new LinkedTreeMap<>();
         }
 
         if (!storageFile.exists()) return;
@@ -134,7 +140,7 @@ public class ModBugStore
         {
             if (bugs == null)
             {
-                bugs = Maps.newLinkedHashMap();
+                bugs = new LinkedTreeMap<>();
             }
         }
     }

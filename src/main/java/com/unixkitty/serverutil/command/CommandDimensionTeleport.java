@@ -20,8 +20,6 @@ import java.util.List;
 
 public class CommandDimensionTeleport extends CommandBase
 {
-    final String stringUsage = ServerUtilMod.MODID + ".commands.tpx.usage";
-
     private final List<String> aliases;
 
     public CommandDimensionTeleport()
@@ -47,7 +45,7 @@ public class CommandDimensionTeleport extends CommandBase
     @Nonnull
     public String getUsage(@Nonnull ICommandSender sender)
     {
-        return ServerUtilMod.proxy.translateString(stringUsage);
+        return ServerUtilMod.MODID + ".commands.tpx.usage";
     }
 
     @Override
@@ -117,7 +115,7 @@ public class CommandDimensionTeleport extends CommandBase
                     }
                     else
                     {
-                        throw new CommandException(ServerUtilMod.proxy.translateString(ServerUtilMod.MODID + ".commands.tpx.sameDimension"));
+                        throw new CommandException(ServerUtilMod.MODID + ".commands.tpx.sameDimension");
                     }
                 }
             }

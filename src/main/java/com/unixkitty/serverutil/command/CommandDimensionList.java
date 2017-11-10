@@ -1,12 +1,11 @@
 package com.unixkitty.serverutil.command;
 
 import com.unixkitty.serverutil.ServerUtilMod;
+import com.unixkitty.serverutil.util.TranslationHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.WorldServer;
 
 import javax.annotation.Nonnull;
@@ -34,7 +33,7 @@ public class CommandDimensionList extends CommandBase
         {
             if (world != null)
             {
-                sender.sendMessage(new TextComponentTranslation(ServerUtilMod.MODID + ".commands.dimensionlist.message", world.provider.getDimensionType().getName(), world.provider.getDimension()));
+                TranslationHandler.sendTranslatedMessage(sender, ServerUtilMod.MODID + ".commands.dimensionlist.message", world.provider.getDimensionType().getName(), world.provider.getDimension());
             }
         }
     }

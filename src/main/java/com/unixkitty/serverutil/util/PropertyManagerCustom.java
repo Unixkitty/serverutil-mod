@@ -10,7 +10,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-@SideOnly(Side.SERVER)
 public class PropertyManagerCustom
 {
     private Properties properties;

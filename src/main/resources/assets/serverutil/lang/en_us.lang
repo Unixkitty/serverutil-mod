@@ -13,6 +13,7 @@ OR /mod_bugs reload \n\
 OR /mod_bugs remove <name> \n\
 OR /mod_bugs update <name> < description | status > \n\
     status can be one of: "relevant", "fixed"
+serverutil.commands.mod_bugs.reload=Reloading mod_bugs file
 serverutil.commands.mod_bugs.exists=Entry with name %s already exists!
 serverutil.commands.mod_bugs.notexists=Entry not found
 serverutil.commands.mod_bugs.changesuccess=Successfully updated bug with name %s

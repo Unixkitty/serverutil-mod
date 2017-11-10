@@ -119,7 +119,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
                 case "reload":
                     if (sender.canUseCommand(4, getName()))
                     {
-                        sender.sendMessage(new TextComponentString("Reloading mod_bugs file."));
+                        sender.sendMessage(new TextComponentTranslation(ServerUtilMod.MODID + ".commands.mod_bugs.reload"));
                         reloadProperties();
                     }
                     else

@@ -6,6 +6,7 @@ import com.unixkitty.serverutil.ServerUtilMod;
 import com.unixkitty.serverutil.command.util.IInformationSender;
 import com.unixkitty.serverutil.command.util.ModBugStore;
 import com.unixkitty.serverutil.util.PlayerIDTool;
+import com.unixkitty.serverutil.util.TranslationHandler;
 import net.minecraft.command.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
@@ -94,7 +95,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
     {
         if (bugListMessage.equals(Collections.emptyList()))
         {
-            sender.sendMessage(new TextComponentTranslation(ServerUtilMod.MODID + ".commands.mod_bugs.listempty"));
+            TranslationHandler.sendTranslatedMessage(sender, ServerUtilMod.MODID + ".commands.mod_bugs.listempty");
         }
         else
         {
@@ -119,7 +120,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
                 case "reload":
                     if (sender.canUseCommand(4, getName()))
                     {
-                        sender.sendMessage(new TextComponentTranslation(ServerUtilMod.MODID + ".commands.mod_bugs.reload"));
+                        TranslationHandler.sendTranslatedMessage(sender, ServerUtilMod.MODID + ".commands.reload", "mod_bugs");
                         reloadProperties();
                     }
                     else
@@ -189,7 +190,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
                         {
                             ModBugStore.removeBug(args[1]);
                             buildMessage();
-                            sender.sendMessage(new TextComponentTranslation(ServerUtilMod.MODID + ".commands.mod_bugs.bugremoved", args[1]));
+                            TranslationHandler.sendTranslatedMessage(sender, ServerUtilMod.MODID + ".commands.mod_bugs.bugremoved", args[1]);
                         }
                         else
                         {
@@ -209,7 +210,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
 
     private void messageSuccess(ICommandSender sender, String s)
     {
-        sender.sendMessage(new TextComponentTranslation(ServerUtilMod.MODID + ".commands.mod_bugs.changesuccess", s));
+        TranslationHandler.sendTranslatedMessage(sender, ServerUtilMod.MODID + ".commands.mod_bugs.changesuccess", s);
     }
 
     private void nope() throws CommandException

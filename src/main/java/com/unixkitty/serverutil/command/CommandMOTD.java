@@ -3,6 +3,7 @@ package com.unixkitty.serverutil.command;
 import com.unixkitty.serverutil.ServerUtilMod;
 import com.unixkitty.serverutil.command.util.IInformationSender;
 import com.unixkitty.serverutil.util.PropertyManagerCustom;
+import com.unixkitty.serverutil.util.TranslationHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -104,7 +105,7 @@ public class CommandMOTD extends CommandBase implements IInformationSender
         if (args.length >= 1 && args[0].equals("reload") && sender.canUseCommand(4, this.getName()))
         {
             this.reloadProperties();
-            sender.sendMessage(new TextComponentString("Reloading motd file."));
+            TranslationHandler.sendTranslatedMessage(sender, ServerUtilMod.MODID + ".commands.reload", "motd");
         }
         else
         {

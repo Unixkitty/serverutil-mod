@@ -81,7 +81,6 @@ public class TranslationHandler
     public static void sendTranslatedMessage(ICommandSender sender, String key, Object... args)
     {
         //TODO exceptions
-        //TODO replace usages of sender.sendMessage to this
         //TODO mod installed on client?(client standalone?)
         String locale;
 

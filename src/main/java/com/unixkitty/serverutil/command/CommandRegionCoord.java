@@ -2,6 +2,7 @@ package com.unixkitty.serverutil.command;
 
 import com.unixkitty.serverutil.ServerUtilMod;
 import com.unixkitty.serverutil.util.CoordinateSet;
+import com.unixkitty.serverutil.util.TranslationHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -9,6 +10,7 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
@@ -63,17 +65,17 @@ public class CommandRegionCoord extends CommandBase
         }
     }
 
-    private TextComponentTranslation coordMessage(WorldServer worldServer, double arg1, double arg2) throws CommandException
+    private TextComponentString coordMessage(WorldServer worldServer, double arg1, double arg2) throws CommandException
     {
         return coordMessage(worldServer, String.valueOf(arg1), String.valueOf(arg2));
     }
 
-    private TextComponentTranslation coordMessage(WorldServer worldServer, String arg1, String arg2) throws CommandException
+    private TextComponentString coordMessage(WorldServer worldServer, String arg1, String arg2) throws CommandException
     {
         CoordinateSet coords = CoordinateSet.parseCoordinates(0, 0, 0, arg1, "64", arg2);
         Chunk chunk = worldServer.getChunkFromBlockCoords(new BlockPos(coords.getX(), coords.getY(), coords.getZ()));
 
-        return new TextComponentTranslation(ServerUtilMod.MODID + ".commands.regioncoord.message",
-                "r." + (chunk.x >> 5) + "." + (chunk.z >> 5) + ".mca", chunk.x, chunk.z);
+        return new TextComponentString(TranslationHandler.translate(ServerUtilMod.MODID + ".commands.regioncoord.message",
+                "r." + (chunk.x >> 5) + "." + (chunk.z >> 5) + ".mca", chunk.x, chunk.z));
     }
 }

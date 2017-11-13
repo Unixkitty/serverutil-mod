@@ -13,12 +13,13 @@ OR /mod_bugs reload \n\
 OR /mod_bugs remove <название> \n\
 OR /mod_bugs update <название> < описание | статус > \n\
     статус может быть один из: "relevant", "fixed"
-serverutil.commands.mod_bugs.reload=mod_bugs файл перезагружается
 serverutil.commands.mod_bugs.exists=Запись под названием %s уже существует!
 serverutil.commands.mod_bugs.notexists=Запись не обнаружена
 serverutil.commands.mod_bugs.changesuccess=Успешно обновлен баг с названием %s
 serverutil.commands.mod_bugs.bugremoved=Баг %s удален
 serverutil.commands.mod_bugs.listempty=Список багов пуст
 
-serverutil.commands.nosuchplayer=Игрок с именем %s не обнаружен!
 serverutil.commands.playerid.usage=/playerid ( имя | uuid )
+
+serverutil.commands.nosuchplayer=Игрок с именем %s не обнаружен!
+serverutil.commands.reload=%s файл перезагружается

@@ -33,7 +33,7 @@ public class CommandDimensionList extends CommandBase
         {
             if (world != null)
             {
-                TranslationHandler.sendTranslatedMessage(sender, ServerUtilMod.MODID + ".commands.dimensionlist.message", world.provider.getDimensionType().getName(), world.provider.getDimension());
+                TranslationHandler.sendMessage(sender, ServerUtilMod.MODID + ".commands.dimensionlist.message", world.provider.getDimensionType().getName(), world.provider.getDimension());
             }
         }
     }

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.unixkitty.serverutil.ServerUtilMod;
 import com.unixkitty.serverutil.command.util.CustomDimensionTeleporter;
 import com.unixkitty.serverutil.util.CoordinateSet;
+import com.unixkitty.serverutil.util.TranslationHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -45,7 +46,7 @@ public class CommandDimensionTeleport extends CommandBase
     @Nonnull
     public String getUsage(@Nonnull ICommandSender sender)
     {
-        return ServerUtilMod.MODID + ".commands.tpx.usage";
+        return TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.tpx.usage");
     }
 
     @Override
@@ -115,7 +116,7 @@ public class CommandDimensionTeleport extends CommandBase
                     }
                     else
                     {
-                        throw new CommandException(ServerUtilMod.MODID + ".commands.tpx.sameDimension");
+                        throw new CommandException(TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.tpx.sameDimension"));
                     }
                 }
             }

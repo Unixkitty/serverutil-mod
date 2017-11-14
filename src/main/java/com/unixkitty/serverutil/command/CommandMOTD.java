@@ -105,7 +105,7 @@ public class CommandMOTD extends CommandBase implements IInformationSender
         if (args.length >= 1 && args[0].equals("reload") && sender.canUseCommand(4, this.getName()))
         {
             this.reloadProperties();
-            TranslationHandler.sendTranslatedMessage(sender, ServerUtilMod.MODID + ".commands.reload", "motd");
+            TranslationHandler.sendMessage(sender, ServerUtilMod.MODID + ".commands.reload", "motd");
         }
         else
         {

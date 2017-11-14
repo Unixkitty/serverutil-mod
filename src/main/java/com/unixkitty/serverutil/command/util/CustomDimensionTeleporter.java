@@ -54,13 +54,14 @@ public class CustomDimensionTeleporter extends Teleporter
         MinecraftServer server = entity.getEntityWorld().getMinecraftServer();
         WorldServer worldServer = server.getWorld(dimensionId);
 
-        if (worldServer == null || worldServer.getMinecraftServer() == null)
+        //TODO test nonexistent dimensionId
+        if (worldServer == null)
         {
             //Dimension does not exist
-            throw new IllegalArgumentException("Dimension: " + dimensionId + "does not exist!");
+            throw new IllegalArgumentException(dimensionId + "");
         }
 
-        PlayerList playerList = worldServer.getMinecraftServer().getPlayerList();
+        PlayerList playerList = server.getPlayerList();
 
         if (entity instanceof EntityPlayerMP)
         {

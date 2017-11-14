@@ -11,7 +11,6 @@ import net.minecraft.command.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -66,7 +65,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
     @Override
     public String getUsage(@Nonnull ICommandSender sender)
     {
-        return ServerUtilMod.MODID + ".commands.mod_bugs.usage";
+        return TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.mod_bugs.usage");
     }
 
     @Override
@@ -95,7 +94,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
     {
         if (bugListMessage.equals(Collections.emptyList()))
         {
-            TranslationHandler.sendTranslatedMessage(sender, ServerUtilMod.MODID + ".commands.mod_bugs.listempty");
+            TranslationHandler.sendMessage(sender, ServerUtilMod.MODID + ".commands.mod_bugs.listempty");
         }
         else
         {
@@ -120,7 +119,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
                 case "reload":
                     if (sender.canUseCommand(4, getName()))
                     {
-                        TranslationHandler.sendTranslatedMessage(sender, ServerUtilMod.MODID + ".commands.reload", "mod_bugs");
+                        TranslationHandler.sendMessage(sender, ServerUtilMod.MODID + ".commands.reload", "mod_bugs");
                         reloadProperties();
                     }
                     else
@@ -133,7 +132,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
                     {
                         if (args.length >= 3)
                         {
-                            ModBugStore.addBug(args[1], UUIDTypeAdapter.fromString(PlayerIDTool.getIDFromCommand(server, sender, args[2]).id()), joinDescription(args, 3));
+                            ModBugStore.addBug(sender, args[1], UUIDTypeAdapter.fromString(PlayerIDTool.getIDFromCommand(server, sender, args[2]).id()), joinDescription(args, 3));
                             buildMessage();
                             messageSuccess(sender, args[1]);
                         }
@@ -157,7 +156,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
                             {
                                 status = ModBugStore.BUG_STATUS.valueOf(args[2].toUpperCase());
 
-                                ModBugStore.updateBug(args[1], status);
+                                ModBugStore.updateBug(sender, args[1], status);
                                 buildMessage();
                                 messageSuccess(sender, args[1]);
                             }
@@ -168,7 +167,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
 
                             if (status == null)
                             {
-                                ModBugStore.updateBug(args[1], joinDescription(args, 2));
+                                ModBugStore.updateBug(sender, args[1], joinDescription(args, 2));
                                 buildMessage();
                                 messageSuccess(sender, args[1]);
                             }
@@ -188,9 +187,9 @@ public class CommandModBugs extends CommandBase implements IInformationSender
                     {
                         if (args.length >= 2)
                         {
-                            ModBugStore.removeBug(args[1]);
+                            ModBugStore.removeBug(sender, args[1]);
                             buildMessage();
-                            TranslationHandler.sendTranslatedMessage(sender, ServerUtilMod.MODID + ".commands.mod_bugs.bugremoved", args[1]);
+                            TranslationHandler.sendMessage(sender, ServerUtilMod.MODID + ".commands.mod_bugs.bugremoved", args[1]);
                         }
                         else
                         {
@@ -210,7 +209,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
 
     private void messageSuccess(ICommandSender sender, String s)
     {
-        TranslationHandler.sendTranslatedMessage(sender, ServerUtilMod.MODID + ".commands.mod_bugs.changesuccess", s);
+        TranslationHandler.sendMessage(sender, ServerUtilMod.MODID + ".commands.mod_bugs.changesuccess", s);
     }
 
     private void nope() throws CommandException

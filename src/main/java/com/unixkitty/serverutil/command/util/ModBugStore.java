@@ -8,7 +8,9 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.internal.LinkedTreeMap;
 import com.unixkitty.serverutil.ServerUtilMod;
 import com.unixkitty.serverutil.util.PlayerIDTool;
+import com.unixkitty.serverutil.util.TranslationHandler;
 import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -56,11 +58,11 @@ public class ModBugStore
         return list;
     }
 
-    public static void addBug(String name, UUID player, String description) throws CommandException
+    public static void addBug(ICommandSender sender, String name, UUID player, String description) throws CommandException
     {
         if (bugs.containsKey(name))
         {
-            throw new CommandException(ServerUtilMod.MODID + ".commands.mod_bugs.exists", name);
+            throw new CommandException(TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.mod_bugs.exists", name));
         }
         else
         {
@@ -69,7 +71,7 @@ public class ModBugStore
         }
     }
 
-    public static void updateBug(String name, String description) throws CommandException
+    public static void updateBug(ICommandSender sender, String name, String description) throws CommandException
     {
         if (bugs.containsKey(name))
         {
@@ -78,11 +80,11 @@ public class ModBugStore
         }
         else
         {
-            throw new CommandException(nosuchbug);
+            throw new CommandException(TranslationHandler.translate(sender, nosuchbug));
         }
     }
 
-    public static void updateBug(String name, BUG_STATUS status) throws CommandException
+    public static void updateBug(ICommandSender sender, String name, BUG_STATUS status) throws CommandException
     {
         if (bugs.containsKey(name))
         {
@@ -91,11 +93,11 @@ public class ModBugStore
         }
         else
         {
-            throw new CommandException(nosuchbug);
+            throw new CommandException(TranslationHandler.translate(sender, nosuchbug));
         }
     }
 
-    public static void removeBug(String name) throws CommandException
+    public static void removeBug(ICommandSender sender, String name) throws CommandException
     {
         if (bugs.remove(name) != null)
         {
@@ -103,7 +105,7 @@ public class ModBugStore
         }
         else
         {
-            throw new CommandException(nosuchbug);
+            throw new CommandException(TranslationHandler.translate(sender, nosuchbug));
         }
     }
 

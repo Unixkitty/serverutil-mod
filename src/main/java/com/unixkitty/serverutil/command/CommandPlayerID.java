@@ -3,6 +3,7 @@ package com.unixkitty.serverutil.command;
 import com.mojang.util.UUIDTypeAdapter;
 import com.unixkitty.serverutil.ServerUtilMod;
 import com.unixkitty.serverutil.util.PlayerIDTool;
+import com.unixkitty.serverutil.util.TranslationHandler;
 import net.minecraft.command.*;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -27,7 +28,7 @@ public class CommandPlayerID extends CommandBase
     @Override
     public String getUsage(@Nonnull ICommandSender sender)
     {
-        return ServerUtilMod.MODID + ".commands.playerid.usage";
+        return TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.playerid.usage");
     }
 
     @Override

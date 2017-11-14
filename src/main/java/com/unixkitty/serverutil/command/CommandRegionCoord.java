@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 
@@ -30,7 +29,7 @@ public class CommandRegionCoord extends CommandBase
     @Override
     public String getUsage(@Nonnull ICommandSender sender)
     {
-        return ServerUtilMod.MODID + ".commands.regioncoord.usage";
+        return TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.regioncoord.usage");
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.unixkitty.serverutil.ServerUtilMod;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextComponentString;
@@ -78,22 +79,35 @@ public class TranslationHandler
         }
     }
 
-    public static void sendTranslatedMessage(ICommandSender sender, String key, Object... args)
+    public static void sendMessage(ICommandSender sender, String key, Object... args)
     {
-        //TODO exceptions
         //TODO mod installed on client?(client standalone?)
+        sender.sendMessage(new TextComponentString(translate(sender, key, args)));
+    }
+
+    public static String getSenderLocale(ICommandSender sender)
+    {
         String locale;
 
         if (sender instanceof EntityPlayerMP)
         {
             locale = ObfuscationReflectionHelper.getPrivateValue(EntityPlayerMP.class, (EntityPlayerMP) sender, "language");
         }
+        else if (Minecraft.getMinecraft().isSingleplayer())
+        {
+            locale = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
+        }
         else
         {
             locale = DEFAULT_LANGUAGE;
         }
 
-        sender.sendMessage(new TextComponentString(translate(locale.toLowerCase(), key, args)));
+        return locale.toLowerCase();
+    }
+
+    public static String translate(ICommandSender sender, String key, Object... args)
+    {
+        return translate(getSenderLocale(sender), key, args);
     }
 
     public static String translate(String locale, String key, Object... args)
@@ -116,7 +130,7 @@ public class TranslationHandler
         return key;
     }
 
-    private static String translation(String locale , String key, Object... args)
+    private static String translation(String locale, String key, Object... args)
     {
         return String.format(languages.get(locale).get(key), args);
     }

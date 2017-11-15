@@ -1,6 +1,6 @@
 package com.unixkitty.serverutil.proxy;
 
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -8,8 +8,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ClientProxy extends CommonProxy
 {
     @Override
-    public String translateString(String key)
+    public String getClientLocale()
     {
-        return I18n.format(key);
+        return Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
     }
 }

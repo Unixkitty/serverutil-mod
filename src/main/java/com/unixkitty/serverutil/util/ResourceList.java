@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.regex.Pattern;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 /**
  * list resources available from the classpath @ *
@@ -34,10 +34,10 @@ public class ResourceList
         return retval;
     }
 
-    public static Collection<String> getResources(final String element, final Pattern pattern)
+    public static Collection<String> getResources(final String pkg, final Pattern pattern)
     {
         final ArrayList<String> retval = new ArrayList<>();
-        final File file = new File(element);
+        final File file = new File(pkg);
         if (file.isDirectory())
         {
             retval.addAll(getResourcesFromDirectory(file, pattern));
@@ -52,29 +52,32 @@ public class ResourceList
     private static Collection<String> getResourcesFromJarFile(final File file, final Pattern pattern)
     {
         final ArrayList<String> retval = new ArrayList<>();
-        ZipFile zf;
+
+        String jarLocation = file.toString().replace("jar:", "").replace("file:", "").split("!")[0];
+        String pkg = file.toString().split("!")[1].replaceFirst("/", "");
+
+        JarFile jarFile;
         try
         {
-            zf = new ZipFile(file);
+            jarFile = new JarFile(jarLocation.split("!")[0]);
         }
         catch (final IOException e)
         {
             throw new Error(e);
         }
-        final Enumeration e = zf.entries();
+        final Enumeration e = jarFile.entries();
         while (e.hasMoreElements())
         {
-            final ZipEntry ze = (ZipEntry) e.nextElement();
-            final String fileName = ze.getName();
-            final boolean accept = pattern.matcher(fileName).matches();
-            if (accept)
+            final JarEntry entry = (JarEntry) e.nextElement();
+            final String fileName = entry.getName();
+            if (fileName.startsWith(pkg) && pattern.matcher(fileName).matches())
             {
-                retval.add(fileName);
+                retval.add("jar:file:" + jarLocation + "!" + "/" + fileName);
             }
         }
         try
         {
-            zf.close();
+            jarFile.close();
         }
         catch (final IOException e1)
         {

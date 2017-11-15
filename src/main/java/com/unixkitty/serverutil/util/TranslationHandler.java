@@ -1,10 +1,8 @@
 package com.unixkitty.serverutil.util;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.unixkitty.serverutil.ServerUtilMod;
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextComponentString;
@@ -27,10 +25,13 @@ public class TranslationHandler
     private static final String extension = ".lang";
     private static final Pattern pattern = Pattern.compile(".*" + extension);
 
-    private TranslationHandler(){}
+    private TranslationHandler()
+    {
+    }
 
     public static void loadTranslations()
     {
+        //TODO test on Windows
         String clazz = TranslationHandler.class.getName().replace(".", "/");
         URL location = TranslationHandler.class.getClassLoader().getResource(clazz + ".class");
         if (location != null)
@@ -44,6 +45,7 @@ public class TranslationHandler
                 Map<String, String> translations;
                 String[] translation;
                 BufferedReader reader;
+                InputStream is;
                 String locale;
                 String line;
 
@@ -53,7 +55,18 @@ public class TranslationHandler
                     {
                         translations = new HashMap<>();
                         locale = new File(file).getName().replace(extension, "");
-                        reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), Charsets.UTF_8));
+
+                        if (file.startsWith("jar:"))
+                        {
+                            file = file.split("!")[1];
+                            is = TranslationHandler.class.getResourceAsStream(file);
+                        }
+                        else
+                        {
+                            is = new FileInputStream(file);
+                        }
+
+                        reader = new BufferedReader(new InputStreamReader(is));
 
                         while ((line = reader.readLine()) != null)
                         {
@@ -64,6 +77,7 @@ public class TranslationHandler
                             }
                         }
 
+                        is.close();
                         reader.close();
 
                         languages.put(locale, translations);
@@ -74,7 +88,7 @@ public class TranslationHandler
                     }
                 }
 
-                ServerUtilMod.log.debug("The following languages were loaded successfully: " + languages.keySet());
+                ServerUtilMod.log.info("The following languages were loaded successfully: " + languages.keySet());
             }
         }
     }
@@ -85,7 +99,7 @@ public class TranslationHandler
         sender.sendMessage(new TextComponentString(translate(sender, key, args)));
     }
 
-    public static String getSenderLocale(ICommandSender sender)
+    private static String getSenderLocale(ICommandSender sender)
     {
         String locale;
 
@@ -93,13 +107,13 @@ public class TranslationHandler
         {
             locale = ObfuscationReflectionHelper.getPrivateValue(EntityPlayerMP.class, (EntityPlayerMP) sender, "language");
         }
-        else if (Minecraft.getMinecraft().isSingleplayer())
-        {
-            locale = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
-        }
         else
         {
-            locale = DEFAULT_LANGUAGE;
+            locale = ServerUtilMod.proxy.getClientLocale();
+            if (locale == null)
+            {
+                return DEFAULT_LANGUAGE;
+            }
         }
 
         return locale.toLowerCase();

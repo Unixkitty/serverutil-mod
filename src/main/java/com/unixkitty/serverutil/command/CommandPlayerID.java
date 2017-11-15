@@ -14,6 +14,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class CommandPlayerID extends CommandBase
 {
@@ -29,6 +30,12 @@ public class CommandPlayerID extends CommandBase
     public String getUsage(@Nonnull ICommandSender sender)
     {
         return TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.playerid.usage");
+    }
+
+    @Override
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender)
+    {
+        return true;
     }
 
     @Override
@@ -62,7 +69,7 @@ public class CommandPlayerID extends CommandBase
     {
         if (args.length == 0 && sender instanceof EntityPlayerMP)
         {
-            sender.sendMessage(new TextComponentString(UUIDTypeAdapter.fromUUID(getCommandSenderAsPlayer(sender).getUniqueID())));
+            sender.sendMessage(new TextComponentString(getCommandSenderAsPlayer(sender).getUniqueID().toString()));
         }
         else if (args.length > 0)
         {

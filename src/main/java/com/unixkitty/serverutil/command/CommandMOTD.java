@@ -85,6 +85,12 @@ public class CommandMOTD extends CommandBase implements IInformationSender
         player.sendMessage(new TextComponentString(message));
     }
 
+    @Override
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender)
+    {
+        return true;
+    }
+
     @Nonnull
     @Override
     public String getName()

@@ -1,19 +1,15 @@
-#PARSE_ESCAPES
 serverutil.commands.regioncoord.usage=/regioncoord <x> <z>
 serverutil.commands.regioncoord.message=Имя регион файла: %s, координаты чанка: %s, %s
 
 serverutil.commands.dimensionlist.message=%s, ид: %s
 
-serverutil.commands.tpx.usage=/tpx (перемещаем что) (перемещаем куда) \n\
-OR /tpx (перемещаем что) (ид измерения) [ <x> <y> <z> ]
+serverutil.commands.tpx.usage=/tpx (перемещаем что) (перемещаем куда) %nOR /tpx (перемещаем что) (ид измерения) [ <x> <y> <z> ]
+serverutil.commands.tpx.success=%s телепортирован в измерение %s (%s)
+serverutil.commands.tpx.success.coordinates=%s телепортирован в измерение %s (%s) на %s %s %s
 serverutil.commands.tpx.sameDimension=Объект уже находится в указанном измерении!
 serverutil.commands.tpx.noSuchDimension=Измерение: %s не существует!
 
-serverutil.commands.mod_bugs.usage=/mod_bugs add (название) (обнаружил) [описание] \n\
-OR /mod_bugs reload \n\
-OR /mod_bugs remove <название> \n\
-OR /mod_bugs update <название> < описание | статус > \n\
-    статус может быть один из: "relevant", "fixed"
+serverutil.commands.mod_bugs.usage=/mod_bugs add (название) (кто обнаружил) [описание] %n/mod_bugs person (название) %nOR /mod_bugs reload %nOR /mod_bugs remove <название> %nOR /mod_bugs update <название> < описание | статус > %n    статус может быть один из: "relevant", "fixed"
 serverutil.commands.mod_bugs.exists=Запись под названием %s уже существует!
 serverutil.commands.mod_bugs.notexists=Запись не обнаружена
 serverutil.commands.mod_bugs.changesuccess=Успешно обновлен баг с названием %s

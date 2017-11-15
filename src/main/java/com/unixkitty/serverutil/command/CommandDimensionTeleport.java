@@ -13,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -105,6 +106,7 @@ public class CommandDimensionTeleport extends CommandBase
                             teleportingEntity.setLocationAndAngles(targetX, targetY, targetZ, targetEntity.rotationYaw, targetEntity.rotationPitch);
                         }
                     }
+                    notifyTeleportSuccess(1, sender, teleportingEntity, targetEntity);
                 }
                 //Teleporting entity to dimensionId
                 else
@@ -112,7 +114,15 @@ public class CommandDimensionTeleport extends CommandBase
                     //Specified dimension different from current
                     if (teleportingEntity.dimension != targetDimension)
                     {
-                        CustomDimensionTeleporter.teleport(teleportingEntity, targetDimension);
+                        try
+                        {
+                            CustomDimensionTeleporter.teleport(teleportingEntity, targetDimension);
+                            notifyTeleportSuccess(0, sender, teleportingEntity, targetDimension);
+                        }
+                        catch (NullPointerException e)
+                        {
+                            noSuchDimension(sender, targetDimension);
+                        }
                     }
                     else
                     {
@@ -130,7 +140,15 @@ public class CommandDimensionTeleport extends CommandBase
 
                 if (teleportingEntity.dimension != targetDimension)
                 {
-                    CustomDimensionTeleporter.teleport(teleportingEntity, targetDimension, targetX, targetY, targetZ);
+                    try
+                    {
+                        CustomDimensionTeleporter.teleport(teleportingEntity, targetDimension, targetX, targetY, targetZ);
+                        notifyTeleportSuccess(3, teleportingEntity, targetDimension, targetX, targetY, targetZ);
+                    }
+                    catch (NullPointerException e)
+                    {
+                        noSuchDimension(sender, targetDimension);
+                    }
                 }
                 else
                 {
@@ -142,20 +160,55 @@ public class CommandDimensionTeleport extends CommandBase
                     {
                         teleportingEntity.setLocationAndAngles(targetX, targetY, targetZ, teleportingEntity.rotationYaw, teleportingEntity.rotationPitch);
                     }
+                    notifyTeleportSuccess(2, teleportingEntity, targetX, targetY, targetZ);
                 }
             }
             else
             {
                 throw new WrongUsageException(getUsage(sender));
             }
-
         }
     }
 
-    @Override
-    public boolean checkPermission(MinecraftServer server, ICommandSender sender)
+    private void notifyTeleportSuccess(int kind, ICommandSender sender, Object... args)
     {
-        return true;
+        Entity teleportingEntity = (Entity) args[0];
+        switch (kind)
+        {
+            //Entity to dimension
+            case 0:
+                TranslationHandler.sendMessage(sender, ServerUtilMod.MODID + ".commands.tpx.success", teleportingEntity.getDisplayName().getFormattedText(), args[1], getDimensionName(teleportingEntity, (int) args[1]));
+                break;
+            //Entity to entity
+            case 1:
+                sender.sendMessage(new TextComponentTranslation("commands.tp.success", teleportingEntity.getDisplayName().getFormattedText(), ((Entity) args[1]).getDisplayName().getFormattedText()));
+                break;
+            //Entity to coordinates
+            case 2:
+                sender.sendMessage(new TextComponentTranslation("commands.tp.success.coordinates", teleportingEntity.getDisplayName().getFormattedText(), args[1], args[2], args[3]));
+                break;
+            //Entity to dimension coordinates
+            case 3:
+                TranslationHandler.sendMessage(sender, ServerUtilMod.MODID + ".commands.tpx.success.coordinates", teleportingEntity.getDisplayName().getFormattedText(), args[1], getDimensionName(teleportingEntity, (int) args[1]), args[2], args[3], args[4]);
+                break;
+        }
+    }
+
+    private String getDimensionName(Entity entity, int dim)
+    {
+        try
+        {
+            return entity.getEntityWorld().getMinecraftServer().getWorld(dim).provider.getDimensionType().getName();
+        }
+        catch (NullPointerException e)
+        {
+            return "";
+        }
+    }
+
+    private void noSuchDimension(ICommandSender sender, int dim) throws CommandException
+    {
+        throw new CommandException(TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.tpx.noSuchDimension", dim));
     }
 
     @Override

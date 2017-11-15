@@ -33,11 +33,18 @@ public class CommandRegionCoord extends CommandBase
     }
 
     @Override
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender)
+    {
+        return true;
+    }
+
+    @Override
     public int getRequiredPermissionLevel()
     {
         return 0;
     }
 
+    //TODO
     @Override
     public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException
     {
@@ -47,7 +54,7 @@ public class CommandRegionCoord extends CommandBase
             {
                 EntityPlayerMP player = (EntityPlayerMP) sender;
 
-                sender.sendMessage(coordMessage(player.getServerWorld(), player.posX, player.posY));
+                sendCoordMessage(sender, player.getServerWorld(), player.posX, player.posZ);
             }
             else
             {
@@ -56,7 +63,7 @@ public class CommandRegionCoord extends CommandBase
         }
         else if (args.length == 2)
         {
-            sender.sendMessage(coordMessage(server.getWorld(0), args[0], args[1]));
+            sendCoordMessage(sender, server.getWorld(0), args[0], args[1]);
         }
         else
         {
@@ -64,17 +71,17 @@ public class CommandRegionCoord extends CommandBase
         }
     }
 
-    private TextComponentString coordMessage(WorldServer worldServer, double arg1, double arg2) throws CommandException
+    private void sendCoordMessage(ICommandSender sender, WorldServer worldServer, double arg1, double arg2) throws CommandException
     {
-        return coordMessage(worldServer, String.valueOf(arg1), String.valueOf(arg2));
+        sendCoordMessage(sender, worldServer, String.valueOf(arg1), String.valueOf(arg2));
     }
 
-    private TextComponentString coordMessage(WorldServer worldServer, String arg1, String arg2) throws CommandException
+    private void sendCoordMessage(ICommandSender sender, WorldServer worldServer, String arg1, String arg2) throws CommandException
     {
         CoordinateSet coords = CoordinateSet.parseCoordinates(0, 0, 0, arg1, "64", arg2);
         Chunk chunk = worldServer.getChunkFromBlockCoords(new BlockPos(coords.getX(), coords.getY(), coords.getZ()));
 
-        return new TextComponentString(TranslationHandler.translate(ServerUtilMod.MODID + ".commands.regioncoord.message",
-                "r." + (chunk.x >> 5) + "." + (chunk.z >> 5) + ".mca", chunk.x, chunk.z));
+        TranslationHandler.sendMessage(sender, ServerUtilMod.MODID + ".commands.regioncoord.message",
+                "r." + (chunk.x >> 5) + "." + (chunk.z >> 5) + ".mca", chunk.x, chunk.z);
     }
 }

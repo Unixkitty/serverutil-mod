@@ -38,28 +38,21 @@ public class CustomDimensionTeleporter extends Teleporter
         entity.motionZ = 0.0f;
     }
 
-    public static void teleport(Entity entity, int dimensionId)
+    public static void teleport(Entity entity, int dimensionId) throws NullPointerException
     {
         teleport(entity, dimensionId, entity.posX, entity.posY, entity.posZ);
     }
 
-    public static void teleport(Entity entity, Entity entityTarget)
+    public static void teleport(Entity entity, Entity entityTarget) throws NullPointerException
     {
         teleport(entity, entityTarget.dimension, entityTarget.posX, entityTarget.posY, entityTarget.posZ);
     }
 
-    public static void teleport(Entity entity, int dimensionId, double x, double y, double z)
+    public static void teleport(Entity entity, int dimensionId, double x, double y, double z) throws NullPointerException
     {
         int previousDimension = entity.getEntityWorld().provider.getDimension();
         MinecraftServer server = entity.getEntityWorld().getMinecraftServer();
         WorldServer worldServer = server.getWorld(dimensionId);
-
-        //TODO test nonexistent dimensionId
-        if (worldServer == null)
-        {
-            //Dimension does not exist
-            throw new IllegalArgumentException(dimensionId + "");
-        }
 
         PlayerList playerList = server.getPlayerList();
 
@@ -83,6 +76,5 @@ public class CustomDimensionTeleporter extends Teleporter
         {
             playerList.transferEntityToWorld(entity, previousDimension, server.getWorld(previousDimension), server.getWorld(dimensionId), new CustomDimensionTeleporter(worldServer, x, y, z));
         }
-
     }
 }

@@ -12,8 +12,15 @@ import com.unixkitty.serverutil.util.TranslationHandler;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.util.text.event.HoverEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,9 +39,23 @@ public class ModBugStore
 
     private ModBugStore(){}
 
-    public static Bug getBug(String name)
+    public static Bug getBug(ICommandSender sender, String name) throws CommandException
     {
-        return bugs.get(name);
+        if (bugs != null)
+        {
+            if (bugs.containsKey(name))
+            {
+                return bugs.get(name);
+            }
+            else
+            {
+                throw new CommandException(TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.mod_bugs.notexists"));
+            }
+        }
+        else
+        {
+            throw new CommandException(TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.mod_bugs.listempty"));
+        }
     }
 
     public static List<TextComponentString> getBugList() throws IOException, PlayerNotFoundException
@@ -51,11 +72,34 @@ public class ModBugStore
             int i = 0;
             for (Bug bug : bugs.values())
             {
-                list.add(new TextComponentString(++i + ". " + bug.name + " (" + TextFormatting.AQUA + PlayerIDTool.getID(bug.player.toString()).name() + TextFormatting.RESET + ")" + " [" + bug.status + "]: " + bug.description));
+                list.add(new TextComponentString(++i + ". " + bug.name + " (" + getPlayerAsText(bug.player) + ")" + " [" + bug.status + "]: " + bug.description));
             }
         }
 
         return list;
+    }
+
+    //TODO
+    private static String getPlayerAsText(UUID player) throws IOException, PlayerNotFoundException
+    {
+        /*PlayerIDTool.PlayerID playerID = PlayerIDTool.getID(player.toString());
+        NBTTagCompound nbttagcompound = new NBTTagCompound();
+        ResourceLocation resourceLocation = EntityList.getKey(EntityPlayer.class);
+        ITextComponent iTextComponent = new TextComponentString(playerID.name());
+
+        nbttagcompound.setString("id", playerID.id());
+        if (resourceLocation != null)
+        {
+            nbttagcompound.setString("type", resourceLocation.toString());
+        }
+        nbttagcompound.setString("name", playerID.name());
+        iTextComponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/msg " + playerID.name() + " "));
+        iTextComponent.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ENTITY, new TextComponentString(nbttagcompound.toString())));
+        iTextComponent.getStyle().setInsertion(playerID.name());
+        iTextComponent.getStyle().setColor(TextFormatting.AQUA);
+
+        return iTextComponent.getFormattedText();*/
+        return TextFormatting.AQUA + PlayerIDTool.getID(player.toString()).name() + TextFormatting.RESET;
     }
 
     public static void addBug(ICommandSender sender, String name, UUID player, String description) throws CommandException
@@ -75,7 +119,7 @@ public class ModBugStore
     {
         if (bugs.containsKey(name))
         {
-            bugs.put(name, getBug(name).updateDescription(description));
+            bugs.put(name, getBug(sender, name)).updateDescription(description);
             save();
         }
         else
@@ -88,7 +132,7 @@ public class ModBugStore
     {
         if (bugs.containsKey(name))
         {
-            bugs.put(name, getBug(name).updateStatus(status));
+            bugs.put(name, getBug(sender, name).updateStatus(status));
             save();
         }
         else
@@ -207,6 +251,11 @@ public class ModBugStore
         {
             this.status = status;
             return this;
+        }
+
+        public UUID getPlayer()
+        {
+            return this.player;
         }
     }
 

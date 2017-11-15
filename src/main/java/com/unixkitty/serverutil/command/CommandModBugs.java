@@ -61,6 +61,12 @@ public class CommandModBugs extends CommandBase implements IInformationSender
         return 0;
     }
 
+    @Override
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender)
+    {
+        return true;
+    }
+
     @Nonnull
     @Override
     public String getUsage(@Nonnull ICommandSender sender)
@@ -199,6 +205,17 @@ public class CommandModBugs extends CommandBase implements IInformationSender
                     else
                     {
                         nope();
+                    }
+                    break;
+                case "person":
+                    if (args.length >= 2)
+                    {
+                        PlayerIDTool.PlayerID playerID = PlayerIDTool.getIDFromCommand(server, sender, ModBugStore.getBug(sender, args[1]).getPlayer().toString());
+                        sender.sendMessage(new TextComponentString(playerID.name() + ", " + UUIDTypeAdapter.fromString(playerID.id())));
+                    }
+                    else
+                    {
+                        throw new WrongUsageException(getUsage(sender));
                     }
                     break;
                 default:

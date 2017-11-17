@@ -9,7 +9,7 @@ public interface IInformationSender
 {
     List buildMessage() throws CommandException;
 
-    default void reloadProperties() throws CommandException
+    default void reloadMessage() throws CommandException
     {
         this.buildMessage();
     }

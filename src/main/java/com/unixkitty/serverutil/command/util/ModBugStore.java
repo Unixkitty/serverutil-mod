@@ -12,15 +12,8 @@ import com.unixkitty.serverutil.util.TranslationHandler;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.event.ClickEvent;
-import net.minecraft.util.text.event.HoverEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +30,9 @@ public class ModBugStore
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static String nosuchbug = ServerUtilMod.MODID + ".commands.mod_bugs.notexists";
 
-    private ModBugStore(){}
+    private ModBugStore()
+    {
+    }
 
     public static Bug getBug(ICommandSender sender, String name) throws CommandException
     {
@@ -49,12 +44,12 @@ public class ModBugStore
             }
             else
             {
-                throw new CommandException(TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.mod_bugs.notexists"));
+                throw new CommandException(TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.mod_bugs.notexists").getText());
             }
         }
         else
         {
-            throw new CommandException(TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.mod_bugs.listempty"));
+            throw new CommandException(TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.mod_bugs.listempty").getText());
         }
     }
 
@@ -106,7 +101,7 @@ public class ModBugStore
     {
         if (bugs.containsKey(name))
         {
-            throw new CommandException(TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.mod_bugs.exists", name));
+            throw new CommandException(TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.mod_bugs.exists", name).getText());
         }
         else
         {
@@ -124,7 +119,7 @@ public class ModBugStore
         }
         else
         {
-            throw new CommandException(TranslationHandler.translate(sender, nosuchbug));
+            throw new CommandException(TranslationHandler.translate(sender, nosuchbug).getText());
         }
     }
 
@@ -137,7 +132,7 @@ public class ModBugStore
         }
         else
         {
-            throw new CommandException(TranslationHandler.translate(sender, nosuchbug));
+            throw new CommandException(TranslationHandler.translate(sender, nosuchbug).getText());
         }
     }
 
@@ -149,7 +144,7 @@ public class ModBugStore
         }
         else
         {
-            throw new CommandException(TranslationHandler.translate(sender, nosuchbug));
+            throw new CommandException(TranslationHandler.translate(sender, nosuchbug).getText());
         }
     }
 
@@ -170,7 +165,10 @@ public class ModBugStore
         try
         {
             String json = Files.toString(storageFile, charset);
-            Type type = new TypeToken<Map<String, Bug>>() { private static final long serialVersionUID = 1L; }.getType();
+            Type type = new TypeToken<Map<String, Bug>>()
+            {
+                private static final long serialVersionUID = 1L;
+            }.getType();
 
             bugs = gson.fromJson(json, type);
         }
@@ -194,12 +192,15 @@ public class ModBugStore
     /**
      * Used for saving the {@link com.google.gson.Gson#toJson(Object) Gson}
      * representation of the cache to disk
-     *
+     * <p>
      * copy from {@link net.minecraftforge.common.UsernameCache}
      */
-    private static class SaveThread extends Thread {
+    private static class SaveThread extends Thread
+    {
 
-        /** The data that will be saved to disk */
+        /**
+         * The data that will be saved to disk
+         */
         private final String data;
 
         public SaveThread(String data)

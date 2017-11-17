@@ -36,9 +36,9 @@ public final class CoordinateSet
         int i = 4096;
         return new CoordinateSet
                 (
-                CommandBase.parseCoordinate(base1, arg1, true).getResult(),
-                CommandBase.parseCoordinate(base2, arg2, -i, i, false).getResult(),
-                CommandBase.parseCoordinate(base3, arg3, true).getResult()
+                        CommandBase.parseCoordinate(base1, arg1, true).getResult(),
+                        CommandBase.parseCoordinate(base2, arg2, -i, i, false).getResult(),
+                        CommandBase.parseCoordinate(base3, arg3, true).getResult()
                 );
     }
 }

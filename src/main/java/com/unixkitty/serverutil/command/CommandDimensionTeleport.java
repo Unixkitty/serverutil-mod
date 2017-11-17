@@ -47,7 +47,7 @@ public class CommandDimensionTeleport extends CommandBase
     @Nonnull
     public String getUsage(@Nonnull ICommandSender sender)
     {
-        return TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.tpx.usage");
+        return TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.tpx.usage").getText();
     }
 
     @Override
@@ -126,7 +126,7 @@ public class CommandDimensionTeleport extends CommandBase
                     }
                     else
                     {
-                        throw new CommandException(TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.tpx.sameDimension"));
+                        throw new CommandException(TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.tpx.sameDimension").getText());
                     }
                 }
             }
@@ -208,7 +208,7 @@ public class CommandDimensionTeleport extends CommandBase
 
     private void noSuchDimension(ICommandSender sender, int dim) throws CommandException
     {
-        throw new CommandException(TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.tpx.noSuchDimension", dim));
+        throw new CommandException(TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.tpx.noSuchDimension", dim).getText());
     }
 
     @Override
@@ -227,7 +227,6 @@ public class CommandDimensionTeleport extends CommandBase
         }
         else
         {
-            //return args.length > 2 && args.length <= 5 ? getTabCompletionCoordinate(args, 1, targetPos) : Collections.emptyList();
             return Collections.emptyList();
         }
     }

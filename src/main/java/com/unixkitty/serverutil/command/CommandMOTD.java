@@ -1,8 +1,9 @@
 package com.unixkitty.serverutil.command;
 
+import com.google.common.base.Charsets;
 import com.unixkitty.serverutil.ServerUtilMod;
 import com.unixkitty.serverutil.command.util.IInformationSender;
-import com.unixkitty.serverutil.util.PropertyManagerCustom;
+import com.unixkitty.serverutil.util.TextFile;
 import com.unixkitty.serverutil.util.TranslationHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -24,14 +25,18 @@ import java.util.List;
 public class CommandMOTD extends CommandBase implements IInformationSender
 {
     private List<String> MOTD;
-    private final PropertyManagerCustom propertyManager;
+    private final List<String> defaultMOTD;
+    private final TextFile motdFile;
 
     public static final CommandMOTD instance = new CommandMOTD();
 
     private CommandMOTD()
     {
-        this.propertyManager = new PropertyManagerCustom(new File((File) FMLInjectionData.data()[6], ServerUtilMod.MODID + "-" + "motd" + ".properties"), ServerUtilMod.NAME + " motd");
-        this.MOTD = this.buildMessage();
+        this.defaultMOTD = new ArrayList<>();
+        this.defaultMOTD.add("Welcome to the server!");
+        this.defaultMOTD.add("This is an example greeting message");
+        this.motdFile = new TextFile(new File((File) FMLInjectionData.data()[6], ServerUtilMod.MODID + "-" + "motd" + ".txt"), Charsets.UTF_8, defaultMOTD, ServerUtilMod.log);
+        reloadMessage();
     }
 
     @SubscribeEvent
@@ -48,27 +53,13 @@ public class CommandMOTD extends CommandBase implements IInformationSender
     @Override
     public List<String> buildMessage()
     {
-        List<String> message = new ArrayList<>();
-
-        message.add(propertyManager.getStringProperty("welcome_message", "Welcome to the server!"));
-        message.add(propertyManager.getStringProperty("motd.text", "This is an example greeting message."));
-
-        return message;
+        return this.motdFile.readFile();
     }
 
     @Override
-    public void reloadProperties()
+    public void reloadMessage()
     {
-        propertyManager.loadFile();
-        this.MOTD = this.buildMessage();
-    }
-
-    private void sendMessage(EntityPlayer player)
-    {
-        for (String line : this.MOTD)
-        {
-            informPlayer(player, line);
-        }
+        this.MOTD = buildMessage();
     }
 
     @Override
@@ -78,11 +69,6 @@ public class CommandMOTD extends CommandBase implements IInformationSender
         {
             sender.sendMessage(new TextComponentString(line));
         }
-    }
-
-    private void informPlayer(EntityPlayer player, String message)
-    {
-        player.sendMessage(new TextComponentString(message));
     }
 
     @Override
@@ -102,7 +88,7 @@ public class CommandMOTD extends CommandBase implements IInformationSender
     @Override
     public String getUsage(@Nonnull ICommandSender sender)
     {
-        return "";
+        return TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.motd.usage").getText();
     }
 
     @Override
@@ -110,12 +96,12 @@ public class CommandMOTD extends CommandBase implements IInformationSender
     {
         if (args.length >= 1 && args[0].equals("reload") && sender.canUseCommand(4, this.getName()))
         {
-            this.reloadProperties();
+            reloadMessage();
             TranslationHandler.sendMessage(sender, ServerUtilMod.MODID + ".commands.reload", "motd");
         }
         else
         {
-            this.sendMessage(sender);
+            sendMessage(sender);
         }
     }
 

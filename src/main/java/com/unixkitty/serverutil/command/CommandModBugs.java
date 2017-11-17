@@ -7,7 +7,10 @@ import com.unixkitty.serverutil.command.util.IInformationSender;
 import com.unixkitty.serverutil.command.util.ModBugStore;
 import com.unixkitty.serverutil.util.PlayerIDTool;
 import com.unixkitty.serverutil.util.TranslationHandler;
-import net.minecraft.command.*;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -33,7 +36,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
 
         try
         {
-            reloadProperties();
+            reloadMessage();
         }
         catch (CommandException e)
         {
@@ -71,7 +74,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
     @Override
     public String getUsage(@Nonnull ICommandSender sender)
     {
-        return TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.mod_bugs.usage");
+        return TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.mod_bugs.usage").getText();
     }
 
     @Override
@@ -89,7 +92,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
     }
 
     @Override
-    public void reloadProperties() throws CommandException
+    public void reloadMessage() throws CommandException
     {
         ModBugStore.load();
         buildMessage();
@@ -126,7 +129,7 @@ public class CommandModBugs extends CommandBase implements IInformationSender
                     if (sender.canUseCommand(4, getName()))
                     {
                         TranslationHandler.sendMessage(sender, ServerUtilMod.MODID + ".commands.reload", "mod_bugs");
-                        reloadProperties();
+                        reloadMessage();
                     }
                     else
                     {

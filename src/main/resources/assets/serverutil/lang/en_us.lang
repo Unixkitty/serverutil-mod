@@ -1,11 +1,14 @@
+serverutil.commands.motd.usage=/motd [reload]
+
 serverutil.commands.regioncoord.usage=/regioncoord <x> <z>
 serverutil.commands.regioncoord.message=Region file name: %s, chunk coord: %s, %s
 
-serverutil.commands.dimensionlist.message=%s, id: %s
+serverutil.commands.dimensionlist.message=%s, id: %s, subfolder: "%s"
+serverutil.commands.dimensionlist.message.overworld=%s, id: %s
 
 serverutil.commands.tpx.usage=/tpx (target entity) (destination entity) %nOR /tpx (target entity) (dimensionId) [ <x> <y> <z> ]
 serverutil.commands.tpx.success=Teleported %s to dimension %s (%s)
-serverutil.commands.tpx.success.coordinates=Teleported %s to dimension %s (%s) at %s %s %s
+serverutil.commands.tpx.success.coordinates= at %s %s %s
 serverutil.commands.tpx.sameDimension=Entity is already in specified dimension!
 serverutil.commands.tpx.noSuchDimension=Dimension: %s does not exist!
 

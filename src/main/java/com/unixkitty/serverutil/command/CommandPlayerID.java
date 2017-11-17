@@ -4,7 +4,10 @@ import com.mojang.util.UUIDTypeAdapter;
 import com.unixkitty.serverutil.ServerUtilMod;
 import com.unixkitty.serverutil.util.PlayerIDTool;
 import com.unixkitty.serverutil.util.TranslationHandler;
-import net.minecraft.command.*;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
@@ -14,7 +17,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 public class CommandPlayerID extends CommandBase
 {
@@ -29,7 +31,7 @@ public class CommandPlayerID extends CommandBase
     @Override
     public String getUsage(@Nonnull ICommandSender sender)
     {
-        return TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.playerid.usage");
+        return TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.playerid.usage").getText();
     }
 
     @Override

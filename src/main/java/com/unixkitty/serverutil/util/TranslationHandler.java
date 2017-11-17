@@ -95,8 +95,7 @@ public class TranslationHandler
 
     public static void sendMessage(ICommandSender sender, String key, Object... args)
     {
-        //TODO mod installed on client?(client standalone?)
-        sender.sendMessage(new TextComponentString(translate(sender, key, args)));
+        sender.sendMessage(translate(sender, key, args));
     }
 
     private static String getSenderLocale(ICommandSender sender)
@@ -119,12 +118,12 @@ public class TranslationHandler
         return locale.toLowerCase();
     }
 
-    public static String translate(ICommandSender sender, String key, Object... args)
+    public static TextComponentString translate(ICommandSender sender, String key, Object... args)
     {
         return translate(getSenderLocale(sender), key, args);
     }
 
-    public static String translate(String locale, String key, Object... args)
+    public static TextComponentString translate(String locale, String key, Object... args)
     {
         if (languages.containsKey(locale))
         {
@@ -141,11 +140,11 @@ public class TranslationHandler
             }
         }
 
-        return key;
+        return new TextComponentString(key);
     }
 
-    private static String translation(String locale, String key, Object... args)
+    private static TextComponentString translation(String locale, String key, Object... args)
     {
-        return String.format(languages.get(locale).get(key), args);
+        return new TextComponentString(String.format(languages.get(locale).get(key), args));
     }
 }

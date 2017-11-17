@@ -1,8 +1,6 @@
 package com.unixkitty.serverutil.util;
 
 import com.unixkitty.serverutil.ServerUtilMod;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,13 +8,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class PropertyManagerCustom
+public class PropertyManager
 {
     private Properties properties;
     private final File file;
     private final String comment;
 
-    public PropertyManagerCustom(File propertiesFile, String fileComment)
+    public PropertyManager(File propertiesFile, String fileComment)
     {
         this.file = propertiesFile;
         this.comment = fileComment;
@@ -69,7 +67,7 @@ public class PropertyManagerCustom
      */
     public void generateNewProperties()
     {
-        ServerUtilMod.log.info("Generating new properties file");
+        ServerUtilMod.log.info("Generating new properties file {}", this.file);
         this.saveProperties();
     }
 

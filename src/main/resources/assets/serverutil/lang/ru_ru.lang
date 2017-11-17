@@ -1,11 +1,14 @@
+serverutil.commands.motd.usage=/motd [reload]
+
 serverutil.commands.regioncoord.usage=/regioncoord <x> <z>
 serverutil.commands.regioncoord.message=Имя регион файла: %s, координаты чанка: %s, %s
 
-serverutil.commands.dimensionlist.message=%s, ид: %s
+serverutil.commands.dimensionlist.message=%s, ид: %s, подпапка: "%s"
+serverutil.commands.dimensionlist.message.overworld=%s, ид: %s
 
 serverutil.commands.tpx.usage=/tpx (перемещаем что) (перемещаем куда) %nOR /tpx (перемещаем что) (ид измерения) [ <x> <y> <z> ]
 serverutil.commands.tpx.success=%s телепортирован в измерение %s (%s)
-serverutil.commands.tpx.success.coordinates=%s телепортирован в измерение %s (%s) на %s %s %s
+serverutil.commands.tpx.success.coordinates= на %s %s %s
 serverutil.commands.tpx.sameDimension=Объект уже находится в указанном измерении!
 serverutil.commands.tpx.noSuchDimension=Измерение: %s не существует!
 

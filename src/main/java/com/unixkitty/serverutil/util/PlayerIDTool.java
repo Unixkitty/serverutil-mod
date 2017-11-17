@@ -30,7 +30,9 @@ public class PlayerIDTool
     private static PlayerID resultCache = null;
     private static PlayerID result = null;
 
-    private PlayerIDTool(){}
+    private PlayerIDTool()
+    {
+    }
 
     public static PlayerID getIDFromCommand(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String arg) throws CommandException
     {
@@ -64,10 +66,9 @@ public class PlayerIDTool
     }
 
     /**
-     *
      * @param input Can be username or uuid
      * @return player id object with two fields
-     * @throws IOException if url fetching failed
+     * @throws IOException             if url fetching failed
      * @throws PlayerNotFoundException
      */
     public static PlayerID getID(String input) throws IOException, PlayerNotFoundException

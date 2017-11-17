@@ -10,7 +10,6 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 
@@ -29,7 +28,7 @@ public class CommandRegionCoord extends CommandBase
     @Override
     public String getUsage(@Nonnull ICommandSender sender)
     {
-        return TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.regioncoord.usage");
+        return TranslationHandler.translate(sender, ServerUtilMod.MODID + ".commands.regioncoord.usage").getText();
     }
 
     @Override
@@ -44,7 +43,6 @@ public class CommandRegionCoord extends CommandBase
         return 0;
     }
 
-    //TODO
     @Override
     public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException
     {

@@ -28,6 +28,7 @@ public class ModBugStore
     private static final Charset charset = StandardCharsets.UTF_8;
     private static final File storageFile = new File(ServerUtilMod.instance.getConfigFolder(), "mod_bugs.json");
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
     private static String nosuchbug = ServerUtilMod.MODID + ".commands.mod_bugs.notexists";
 
     private ModBugStore()
@@ -67,7 +68,7 @@ public class ModBugStore
             int i = 0;
             for (Bug bug : bugs.values())
             {
-                list.add(new TextComponentString(++i + ". " + bug.name + " (" + getPlayerAsText(bug.player) + ")" + " [" + bug.status + "]: " + bug.description));
+                list.add(new TextComponentString(++i + ". " + bug.name + " (" + getPlayerAsText(bug.player) + ")" + " [" + bug.status.getFormatted() + "]: " + bug.description));
             }
         }
 
@@ -274,10 +275,15 @@ public class ModBugStore
             this.formatting = formatting;
         }
 
+        public String getFormatted()
+        {
+            return this.formatting + this.name + TextFormatting.RESET;
+        }
+
         @Override
         public String toString()
         {
-            return this.formatting + this.name + TextFormatting.RESET;
+            return this.name;
         }
     }
 }

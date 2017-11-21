@@ -1,4 +1,8 @@
-serverutil.commands.motd.usage=/motd [reload]
+serverutil.commands.motd.usage=/motd [reload] %n/motd ( enable | disable ) [ username | uuid ]
+serverutil.commands.motd.optout.added=Added %s to the optout list
+serverutil.commands.motd.optout.added.already=%s is already in the list
+serverutil.commands.motd.optout.removed=Removed %s from the optout list
+serverutil.commands.motd.optout.removed.already=%s was not in the list
 
 serverutil.commands.regioncoord.usage=/regioncoord <x> <z>
 serverutil.commands.regioncoord.message=Region file name: %s, chunk coord: %s, %s
@@ -12,7 +16,7 @@ serverutil.commands.tpx.success.coordinates= at %s %s %s
 serverutil.commands.tpx.sameDimension=Entity is already in specified dimension!
 serverutil.commands.tpx.noSuchDimension=Dimension: %s does not exist!
 
-serverutil.commands.mod_bugs.usage=/mod_bugs add (name) (who discovered) [description] %nOR /mod_bugs person (name) %nOR /mod_bugs reload %nOR /mod_bugs remove <name> %nOR /mod_bugs update <name> < description | status > %n    status can be one of: "relevant", "fixed"
+serverutil.commands.mod_bugs.usage=/mod_bugs add (name) (who discovered) [description] %nOR /mod_bugs person <name> %nOR /mod_bugs reload %nOR /mod_bugs remove <name> %nOR /mod_bugs update <name> < description | status > %n    status can be one of: "relevant", "fixed"
 serverutil.commands.mod_bugs.exists=Entry with name %s already exists!
 serverutil.commands.mod_bugs.notexists=Entry not found
 serverutil.commands.mod_bugs.changesuccess=Successfully updated bug with name %s

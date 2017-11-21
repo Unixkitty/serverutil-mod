@@ -1,10 +1,10 @@
 package com.unixkitty.serverutil.command;
 
 import com.google.common.collect.Lists;
-import com.mojang.util.UUIDTypeAdapter;
 import com.unixkitty.serverutil.ServerUtilMod;
 import com.unixkitty.serverutil.command.util.IInformationSender;
 import com.unixkitty.serverutil.command.util.ModBugStore;
+import com.unixkitty.serverutil.config.ModConfig;
 import com.unixkitty.serverutil.util.PlayerIDTool;
 import com.unixkitty.serverutil.util.TranslationHandler;
 import net.minecraft.command.CommandBase;
@@ -133,15 +133,15 @@ public class CommandModBugs extends CommandBase implements IInformationSender
                     }
                     else
                     {
-                        nope();
+                        ServerUtilMod.NOPE();
                     }
                     break;
                 case "add":
-                    if (sender.canUseCommand(2, getName()))
+                    if (ModConfig.non_ops_mod_bugs_add || sender.canUseCommand(2, getName()))
                     {
                         if (args.length >= 3)
                         {
-                            ModBugStore.addBug(sender, args[1], UUIDTypeAdapter.fromString(PlayerIDTool.getIDFromCommand(server, sender, args[2]).id()), joinDescription(args, 3));
+                            ModBugStore.addBug(sender, args[1], PlayerIDTool.getID(server, sender, args[2]).id(), joinDescription(args, 3));
                             buildMessage();
                             messageSuccess(sender, args[1]);
                         }
@@ -152,11 +152,11 @@ public class CommandModBugs extends CommandBase implements IInformationSender
                     }
                     else
                     {
-                        nope();
+                        ServerUtilMod.NOPE();
                     }
                     break;
                 case "update":
-                    if (sender.canUseCommand(2, getName()))
+                    if (ModConfig.non_ops_mod_bugs_update || sender.canUseCommand(2, getName()))
                     {
                         if (args.length >= 3)
                         {
@@ -188,11 +188,11 @@ public class CommandModBugs extends CommandBase implements IInformationSender
                     }
                     else
                     {
-                        nope();
+                        ServerUtilMod.NOPE();
                     }
                     break;
                 case "remove":
-                    if (sender.canUseCommand(3, getName()))
+                    if (ModConfig.non_ops_mod_bugs_remove || sender.canUseCommand(3, getName()))
                     {
                         if (args.length >= 2)
                         {
@@ -207,14 +207,14 @@ public class CommandModBugs extends CommandBase implements IInformationSender
                     }
                     else
                     {
-                        nope();
+                        ServerUtilMod.NOPE();
                     }
                     break;
                 case "person":
                     if (args.length >= 2)
                     {
-                        PlayerIDTool.PlayerID playerID = PlayerIDTool.getIDFromCommand(server, sender, ModBugStore.getBug(sender, args[1]).getPlayer().toString());
-                        sender.sendMessage(new TextComponentString(playerID.name() + ", " + UUIDTypeAdapter.fromString(playerID.id())));
+                        PlayerIDTool.PlayerID playerID = PlayerIDTool.getID(server, sender, ModBugStore.getBug(sender, args[1]).getPlayer().toString());
+                        sender.sendMessage(new TextComponentString(playerID.name() + ", " + playerID));
                     }
                     else
                     {
@@ -230,11 +230,6 @@ public class CommandModBugs extends CommandBase implements IInformationSender
     private void messageSuccess(ICommandSender sender, String s)
     {
         TranslationHandler.sendMessage(sender, ServerUtilMod.MODID + ".commands.mod_bugs.changesuccess", s);
-    }
-
-    private void nope() throws CommandException
-    {
-        throw new CommandException("commands.generic.permission");
     }
 
     private String joinDescription(@Nonnull String[] args, int beginFrom)

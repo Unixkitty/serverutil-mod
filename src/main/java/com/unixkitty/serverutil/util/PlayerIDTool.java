@@ -34,7 +34,12 @@ public class PlayerIDTool
     {
     }
 
-    public static PlayerID getIDFromCommand(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String arg) throws CommandException
+    public static String getUUIDAsText(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String arg) throws CommandException
+    {
+        return getID(server, sender, arg).toString();
+    }
+
+    public static PlayerID getID(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String arg) throws CommandException
     {
         EntityPlayerMP player = null;
 
@@ -71,7 +76,7 @@ public class PlayerIDTool
      * @throws IOException             if url fetching failed
      * @throws PlayerNotFoundException
      */
-    public static PlayerID getID(String input) throws IOException, PlayerNotFoundException
+    public static PlayerID getID(@Nonnull String input) throws IOException, PlayerNotFoundException
     {
         UUID uuid = null;
         try
@@ -203,14 +208,20 @@ public class PlayerIDTool
             this.name = name;
         }
 
-        public String id()
+        public UUID id()
         {
-            return id;
+            return UUIDTypeAdapter.fromString(id);
         }
 
         public String name()
         {
             return name;
+        }
+
+        @Override
+        public String toString()
+        {
+            return this.id().toString();
         }
     }
 }

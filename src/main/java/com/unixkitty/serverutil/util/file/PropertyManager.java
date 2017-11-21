@@ -1,4 +1,4 @@
-package com.unixkitty.serverutil.util;
+package com.unixkitty.serverutil.util.file;
 
 import com.unixkitty.serverutil.ServerUtilMod;
 

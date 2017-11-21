@@ -1,6 +1,5 @@
 package com.unixkitty.serverutil.command;
 
-import com.mojang.util.UUIDTypeAdapter;
 import com.unixkitty.serverutil.ServerUtilMod;
 import com.unixkitty.serverutil.util.PlayerIDTool;
 import com.unixkitty.serverutil.util.TranslationHandler;
@@ -75,8 +74,8 @@ public class CommandPlayerID extends CommandBase
         }
         else if (args.length > 0)
         {
-            PlayerIDTool.PlayerID playerID = PlayerIDTool.getIDFromCommand(server, sender, args[0]);
-            sender.sendMessage(new TextComponentString(playerID.name() + ", " + UUIDTypeAdapter.fromString(playerID.id())));
+            PlayerIDTool.PlayerID playerID = PlayerIDTool.getID(server, sender, args[0]);
+            sender.sendMessage(new TextComponentString(playerID.name() + ", " + playerID));
         }
         else
         {

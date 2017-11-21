@@ -1,4 +1,4 @@
-package com.unixkitty.serverutil.util;
+package com.unixkitty.serverutil.util.file;
 
 import java.io.File;
 import java.io.IOException;

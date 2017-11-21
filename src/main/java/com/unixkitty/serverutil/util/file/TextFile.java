@@ -1,4 +1,4 @@
-package com.unixkitty.serverutil.util;
+package com.unixkitty.serverutil.util.file;
 
 import com.google.common.io.Files;
 import org.apache.logging.log4j.Logger;

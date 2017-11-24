@@ -105,7 +105,8 @@ public class TranslationHandler
 
         if (sender instanceof EntityPlayerMP)
         {
-            locale = ObfuscationReflectionHelper.getPrivateValue(EntityPlayerMP.class, (EntityPlayerMP) sender, "language");
+            //field_71148_cg
+            locale = ObfuscationReflectionHelper.getPrivateValue(EntityPlayerMP.class, (EntityPlayerMP) sender, "language", "field_71148_cg");
         }
         else
         {

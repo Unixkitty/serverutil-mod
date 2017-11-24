@@ -8,6 +8,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ClientProxy extends CommonProxy
 {
     @Override
+    public boolean isClient()
+    {
+        return true;
+    }
+
+    @Override
     public String getClientLocale()
     {
         return Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();

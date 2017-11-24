@@ -143,7 +143,7 @@ public class CommandDimensionTeleport extends CommandBase
                     try
                     {
                         CustomDimensionTeleporter.teleport(teleportingEntity, targetDimension, targetX, targetY, targetZ);
-                        notifyTeleportSuccess(3, teleportingEntity, targetDimension, targetX, targetY, targetZ);
+                        notifyTeleportSuccess(3, sender, teleportingEntity, targetDimension, targetX, targetY, targetZ);
                     }
                     catch (NullPointerException e)
                     {
@@ -160,7 +160,7 @@ public class CommandDimensionTeleport extends CommandBase
                     {
                         teleportingEntity.setLocationAndAngles(targetX, targetY, targetZ, teleportingEntity.rotationYaw, teleportingEntity.rotationPitch);
                     }
-                    notifyTeleportSuccess(2, teleportingEntity, targetX, targetY, targetZ);
+                    notifyTeleportSuccess(2, sender, teleportingEntity, targetX, targetY, targetZ);
                 }
             }
             else

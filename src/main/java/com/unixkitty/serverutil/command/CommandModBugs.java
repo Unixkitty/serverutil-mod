@@ -125,6 +125,30 @@ public class CommandModBugs extends CommandBase implements IInformationSender
         {
             switch (args[0])
             {
+                case "help":
+                    if (args.length >= 2)
+                    {
+                        switch (args[1])
+                        {
+                            case "add":
+                            case "person":
+                            case "remove":
+                                TranslationHandler.sendMessage(sender, ServerUtilMod.MODID + ".commands.mod_bugs.usage." + args[1]);
+                                break;
+                            case "update":
+                            case "status":
+                                TranslationHandler.sendMessage(sender, ServerUtilMod.MODID + ".commands.mod_bugs.usage.update");
+                                TranslationHandler.sendMessage(sender, ServerUtilMod.MODID + ".commands.mod_bugs.usage.status");
+                                break;
+                            default:
+                                throw new WrongUsageException(getUsage(sender));
+                        }
+                    }
+                    else
+                    {
+                        throw new WrongUsageException(getUsage(sender));
+                    }
+                    break;
                 case "reload":
                     if (sender.canUseCommand(4, getName()))
                     {

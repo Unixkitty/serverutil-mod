@@ -1,4 +1,4 @@
-serverutil.commands.motd.usage=/motd [reload] %n/motd ( enable | disable ) [ username | uuid ]
+serverutil.commands.motd.usage=/motd [reload] OR /motd ( enable | disable ) [ username | uuid ]
 serverutil.commands.motd.optout.added=Added %s to the optout list
 serverutil.commands.motd.optout.added.already=%s is already in the list
 serverutil.commands.motd.optout.removed=Removed %s from the optout list
@@ -10,13 +10,18 @@ serverutil.commands.regioncoord.message=Region file name: %s, chunk coord: %s, %
 serverutil.commands.dimensionlist.message=%s, id: %s, subfolder: "%s"
 serverutil.commands.dimensionlist.message.overworld=%s, id: %s
 
-serverutil.commands.tpx.usage=/tpx (target entity) (destination entity) %nOR /tpx (target entity) (dimensionId) [ <x> <y> <z> ]
+serverutil.commands.tpx.usage=/tpx (target entity) (destination entity) OR /tpx (target entity) (dimensionId) [ <x> <y> <z> ]
 serverutil.commands.tpx.success=Teleported %s to dimension %s (%s)
 serverutil.commands.tpx.success.coordinates= at %s %s %s
 serverutil.commands.tpx.sameDimension=Entity is already in specified dimension!
 serverutil.commands.tpx.noSuchDimension=Dimension: %s does not exist!
 
-serverutil.commands.mod_bugs.usage=/mod_bugs add (name) (who discovered) [description] %nOR /mod_bugs person <name> %nOR /mod_bugs reload %nOR /mod_bugs remove <name> %nOR /mod_bugs update <name> < description | status > %n    status can be one of: "relevant", "fixed"
+serverutil.commands.mod_bugs.usage=/mod_bugs [ reload | add | remove | update | help ]
+serverutil.commands.mod_bugs.usage.add=/mod_bugs add (bug name) (who discovered) [description]
+serverutil.commands.mod_bugs.usage.person=/mod_bugs person <bug name>
+serverutil.commands.mod_bugs.usage.remove=/mod_bugs remove <bug name>
+serverutil.commands.mod_bugs.usage.update=/mod_bugs update <name> < description | status >
+serverutil.commands.mod_bugs.usage.status=Status can be one of: "relevant", "fixed"
 serverutil.commands.mod_bugs.exists=Entry with name %s already exists!
 serverutil.commands.mod_bugs.notexists=Entry not found
 serverutil.commands.mod_bugs.changesuccess=Successfully updated bug with name %s

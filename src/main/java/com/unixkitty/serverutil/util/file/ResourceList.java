@@ -1,7 +1,14 @@
 package com.unixkitty.serverutil.util.file;
 
+import com.unixkitty.serverutil.ServerUtilMod;
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -53,13 +60,21 @@ public class ResourceList
     {
         final ArrayList<String> retval = new ArrayList<>();
 
-        String jarLocation = file.toString().replace("jar:", "").replace("file:", "").split("!")[0];
-        String pkg = file.toString().split("!")[1].replaceFirst("/", "");
+        String jarLocation;
+        try
+        {
+            jarLocation = Paths.get(new URL(file.toString().split("!")[0]).toURI()).toString();
+        }
+        catch (MalformedURLException | URISyntaxException e)
+        {
+            throw new Error(e);
+        }
+        String pkg = FilenameUtils.separatorsToUnix(file.toString().split("!")[1]).replaceFirst("/", "");
 
         JarFile jarFile;
         try
         {
-            jarFile = new JarFile(jarLocation.split("!")[0]);
+            jarFile = new JarFile(jarLocation);
         }
         catch (final IOException e)
         {

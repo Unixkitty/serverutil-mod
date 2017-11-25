@@ -1,4 +1,4 @@
-serverutil.commands.motd.usage=/motd [reload] %n/motd ( enable | disable ) [ имя | uuid ]
+serverutil.commands.motd.usage=/motd [reload] ИЛИ /motd ( enable | disable ) [ имя | uuid ]
 serverutil.commands.motd.optout.added=%s добавлен в список исключений
 serverutil.commands.motd.optout.added.already=%s уже в списке
 serverutil.commands.motd.optout.removed=%s удален из списка исключений
@@ -10,13 +10,18 @@ serverutil.commands.regioncoord.message=Имя регион файла: %s, ко
 serverutil.commands.dimensionlist.message=%s, ид: %s, подпапка: "%s"
 serverutil.commands.dimensionlist.message.overworld=%s, ид: %s
 
-serverutil.commands.tpx.usage=/tpx (перемещаем что) (перемещаем куда) %nOR /tpx (перемещаем что) (ид измерения) [ <x> <y> <z> ]
+serverutil.commands.tpx.usage=/tpx (перемещаем что) (перемещаем куда) ИЛИ /tpx (перемещаем что) (ид измерения) [ <x> <y> <z> ]
 serverutil.commands.tpx.success=%s телепортирован в измерение %s (%s)
 serverutil.commands.tpx.success.coordinates= на %s %s %s
 serverutil.commands.tpx.sameDimension=Объект уже находится в указанном измерении!
 serverutil.commands.tpx.noSuchDimension=Измерение: %s не существует!
 
-serverutil.commands.mod_bugs.usage=/mod_bugs add (название) (кто обнаружил) [описание] %n/mod_bugs person <название> %nOR /mod_bugs reload %nOR /mod_bugs remove <название> %nOR /mod_bugs update <название> < описание | статус > %n    статус может быть один из: "relevant", "fixed"
+serverutil.commands.mod_bugs.usage=/mod_bugs [ reload | add | remove | update | help ]
+serverutil.commands.mod_bugs.usage.add=/mod_bugs add (название) (кто обнаружил) [описание]
+serverutil.commands.mod_bugs.usage.person=/mod_bugs person <название>
+serverutil.commands.mod_bugs.usage.remove=/mod_bugs remove <название>
+serverutil.commands.mod_bugs.usage.update=/mod_bugs update <название> < описание | статус >
+serverutil.commands.mod_bugs.usage.status=Статус может быть один из: "relevant", "fixed"
 serverutil.commands.mod_bugs.exists=Запись под названием %s уже существует!
 serverutil.commands.mod_bugs.notexists=Запись не обнаружена
 serverutil.commands.mod_bugs.changesuccess=Успешно обновлен баг с названием %s

@@ -1,5 +1,6 @@
 package com.unixkitty.serverutil.util;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.unixkitty.serverutil.ServerUtilMod;
@@ -67,7 +68,7 @@ public class TranslationHandler
                             is = new FileInputStream(file);
                         }
 
-                        reader = new BufferedReader(new InputStreamReader(is));
+                        reader = new BufferedReader(new InputStreamReader(is, Charsets.UTF_8));
 
                         while ((line = reader.readLine()) != null)
                         {

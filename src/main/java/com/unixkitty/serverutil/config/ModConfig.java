@@ -10,6 +10,7 @@ public class ModConfig
     private static Configuration config;
 
     public static boolean showMOTD = true;
+    public static boolean enableMOTDInSingleplayer = false;
     public static boolean showModBugsAsMOTD = false;
     public static boolean non_ops_motd_can_optout = true;
 
@@ -23,7 +24,8 @@ public class ModConfig
     {
         config = new Configuration(new File(ServerUtilMod.instance.getConfigFolder(), ServerUtilMod.MODID + ".cfg"), ServerUtilMod.VERSION);
 
-        showMOTD = config.getBoolean("showOnJoin", "MOTD", showMOTD, "Global show server MOTDs on join");
+        showMOTD = config.getBoolean("showOnJoin", "MOTD", showMOTD, "Global show server MOTDs to players on join");
+        enableMOTDInSingleplayer = config.getBoolean("enableMOTDInSingleplayer", "MOTD", enableMOTDInSingleplayer, "Show MOTD in Singleplayer, can be useful for LAN servers");
         showModBugsAsMOTD = config.getBoolean("showModBugsAsMOTD", "MOTD", showModBugsAsMOTD, "Should mod bug list be sent to players after motd");
         non_ops_motd_can_optout = config.getBoolean("canUsersOptout", "MOTD", non_ops_motd_can_optout, "Can non-ops opt themselves out from receiving MOTD on join");
 

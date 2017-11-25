@@ -53,7 +53,7 @@ public class CommandMOTD extends CommandBase implements IInformationSender
     public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
     {
         EntityPlayer player = event.player;
-        if (!ServerUtilMod.proxy.isClient() && !optoutList.contains(player.getUniqueID().toString()))
+        if ((!ServerUtilMod.proxy.isClient() || ModConfig.enableMOTDInSingleplayer) && !optoutList.contains(player.getUniqueID().toString()))
         {
             String name = player.getName();
 
